@@ -1,15 +1,21 @@
-type HeaderProps = {
-    title: string
-    subtitle: string
+interface HeaderProps {
+    title: string;
+    subtitle: string;
 }
 
-function Header({ title, subtitle }: HeaderProps) {
+const Header = ({ title, subtitle }: HeaderProps) => {
     return (
-        <header>
+        <header style={headerStyle}>
             <h1>{title}</h1>
             <p>{subtitle}</p>
         </header>
-    )
-}
+    );
+};
 
-export default Header
+const headerStyle: React.CSSProperties = {
+    padding: "2rem",
+    backgroundColor: "#eef2ff",
+    textAlign: "center",
+};
+
+export default Header;
