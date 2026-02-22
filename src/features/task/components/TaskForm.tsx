@@ -78,6 +78,10 @@ const TaskForm = ({ onTaskAdded, disabled }: Props) => {
 
             setForm(initialFormState);
             setErrors({});
+
+            // 🔥 AUTO FULL PAGE RELOAD
+            window.location.reload();
+
         } catch (error) {
             alert("Failed to add task");
         } finally {
