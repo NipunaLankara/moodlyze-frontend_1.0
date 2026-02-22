@@ -16,6 +16,7 @@ export interface UpdateTaskRequest {
     priority?: Priority;
     estimatedTimeMinutes?: number;
     deadlineTime?: string;
+    taskDate?: string;  // same to taskDate
     status?: TaskStatus;
 }
 

@@ -2,6 +2,7 @@ import API from "../../../config/axiosinstance";
 import type {
     CreateTaskRequest,
     UpdateTaskRequest,
+    TaskStatus
 } from "../types/task.types";
 
 export const createTask = (data: CreateTaskRequest) =>
@@ -9,6 +10,9 @@ export const createTask = (data: CreateTaskRequest) =>
 
 export const getAllTasks = () =>
     API.get("/tasks/get-all");
+
+export const getTasksByStatus = (status: TaskStatus) =>
+    API.get(`/tasks/get-all-by-status/${status}`);
 
 export const getTaskById = (taskId: number) =>
     API.get(`/tasks/get-by-id/${taskId}`);
