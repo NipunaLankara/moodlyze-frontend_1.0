@@ -13,12 +13,20 @@ type Props = {
 };
 
 const EmotionDetector = ({ onDetected, mode }: Props) => {
+
     const [emotionType, setEmotionType] =
         useState<"FACE" | "VOICE" | "TEXT" | null>(null);
 
     const [textInput, setTextInput] = useState("");
     const [capturedFile, setCapturedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
+
+    /* ---------------- FILE UPLOAD HANDLER ---------------- */
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+        setCapturedFile(e.target.files[0]);
+    };
 
     /* ---------------- DETECT HANDLER ---------------- */
 
@@ -75,31 +83,53 @@ const EmotionDetector = ({ onDetected, mode }: Props) => {
                     : "Analyze Emotion After Tasks"}
             </h3>
 
-            {/* Selection Buttons */}
+            {/* SELECT TYPE */}
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                <button onClick={() => setEmotionType("FACE")}>
-                    Face
-                </button>
-                <button onClick={() => setEmotionType("VOICE")}>
-                    Voice
-                </button>
-                <button onClick={() => setEmotionType("TEXT")}>
-                    Text
-                </button>
+                <button onClick={() => setEmotionType("FACE")}>Face</button>
+                <button onClick={() => setEmotionType("VOICE")}>Voice</button>
+                <button onClick={() => setEmotionType("TEXT")}>Text</button>
             </div>
 
-            {/* FACE */}
+            {/* FACE OPTIONS */}
             {emotionType === "FACE" && (
-                <WebcamCapture
-                    onCapture={(file) => setCapturedFile(file)}
-                />
+                <div style={{ marginBottom: "15px" }}>
+                    <h4>Take Picture or Upload Image</h4>
+
+                    {/* Take Photo */}
+                    <WebcamCapture
+                        onCapture={(file) => setCapturedFile(file)}
+                    />
+
+                    <p style={{ margin: "10px 0" }}>OR</p>
+
+                    {/* Upload Image */}
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                    />
+                </div>
             )}
 
-            {/* VOICE */}
+            {/* VOICE OPTIONS */}
             {emotionType === "VOICE" && (
-                <AudioRecorder
-                    onRecorded={(file) => setCapturedFile(file)}
-                />
+                <div style={{ marginBottom: "15px" }}>
+                    <h4>Record Voice or Upload Audio</h4>
+
+                    {/* Record */}
+                    <AudioRecorder
+                        onRecorded={(file) => setCapturedFile(file)}
+                    />
+
+                    <p style={{ margin: "10px 0" }}>OR</p>
+
+                    {/* Upload Audio */}
+                    <input
+                        type="file"
+                        accept="audio/*"
+                        onChange={handleFileUpload}
+                    />
+                </div>
             )}
 
             {/* TEXT */}
