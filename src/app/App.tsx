@@ -20,6 +20,13 @@ const TaskDashboard = lazy(() => import("../features/task/pages/TaskDashboard"))
 
 const Testing = lazy(() => import("../features/auth/pages/SignIn/Testing"));
 
+const RestSuggestionPage = lazy(() =>
+    import("../features/analyze/pages/RestSuggestionPage")
+);
+
+const SchedulePage = lazy(() =>
+    import("../features/analyze/pages/SchedulePage")
+);
 
 const App = () => {
     return (
@@ -43,6 +50,10 @@ const App = () => {
                     <Route path="/tasks" element={<TaskDashboard />} />
                     <Route path="/tasks/add" element={<AddTask />} />
                     <Route path="/tasks/edit/:id" element={<EditTask />} />
+
+
+                    <Route path="/analyze/rest" element={<RestSuggestionPage />} />
+                    <Route path="/analyze/schedule" element={<SchedulePage />} />
 
 
 

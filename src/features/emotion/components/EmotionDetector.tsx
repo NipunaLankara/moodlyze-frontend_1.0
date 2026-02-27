@@ -51,7 +51,13 @@ const EmotionDetector = ({ onDetected, mode }: Props) => {
             }
 
             if (res) {
-                onDetected(res.data.data);
+                const responseData = res.data.data;
+
+                if (typeof responseData === "string") {
+                    onDetected(responseData);
+                } else {
+                    onDetected(responseData.emotion);
+                }
             }
 
         } catch (error) {
