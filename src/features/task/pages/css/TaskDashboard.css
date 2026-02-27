@@ -1,0 +1,21 @@
+.dashboard-container {
+    padding: 20px;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.task-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+}

@@ -1,41 +1,79 @@
-import { Route, Routes } from "react-router-dom";
-import Home from "../pages/Home";
+import { Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 
-import SignIn from "../features/auth/pages/SignIn/SignIn";
-import Register from "../features/auth/pages/SignUp/SignUp";
-import VerifyOtp from "../features/auth/pages/VerifyOtp/VerifyOtp";
-import Testing from "../features/auth/pages/SignIn/Testing";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import RoleRoute from "./routes/RoleRoute";
+import MainLayout from "./MainLayout";
+import EditTask from "../features/task/pages/EditTask.tsx";
 
-import UserProfile from "../features/user/pages/UserProfile/UserProfile";
-import VerifyEmailChangeOtp from "../features/user/pages/VerifyEmailChangeOtp/VerifyEmailChangeOtp";
+/* Lazy pages */
+const Home = lazy(() => import("../pages/Home"));
+const SignIn = lazy(() => import("../features/auth/pages/SignIn/SignIn"));
+const Register = lazy(() => import("../features/auth/pages/SignUp/SignUp"));
+const VerifyOtp = lazy(() => import("../features/auth/pages/VerifyOtp/VerifyOtp"));
 
-import AddTask from "../features/task/pages/AddTask";
-import TaskList from "../features/task/pages/TaskList";
+const UserProfile = lazy(() => import("../features/user/pages/UserProfile/UserProfile"));
+const VerifyEmailChangeOtp = lazy(() => import("../features/user/pages/VerifyEmailChangeOtp/VerifyEmailChangeOtp"));
+
+const AddTask = lazy(() => import("../features/task/pages/TaskManagerPage.tsx"));
+const TaskDashboard = lazy(() => import("../features/task/pages/TaskDashboard"));
+
+const Testing = lazy(() => import("../features/auth/pages/SignIn/Testing"));
+
+const RestSuggestionPage = lazy(() =>
+    import("../features/analyze/pages/RestSuggestionPage")
+);
+
+const SchedulePage = lazy(() =>
+    import("../features/analyze/pages/SchedulePage")
+);
 
 const App = () => {
     return (
-        <Routes>
-            <Route path="/" element={<Home />} />
+        <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
 
-            {/* Auth */}
-            <Route path="/login" element={<SignIn />} />
-            <Route path="/sign_up" element={<Register />} />
-            <Route path="/verify_otp" element={<VerifyOtp />} />
+                {/* PUBLIC */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<SignIn />} />
+                <Route path="/sign_up" element={<Register />} />
+                <Route path="/verify_otp" element={<VerifyOtp />} />
 
-            {/* User */}
-            <Route path="/profile" element={<UserProfile />} />
-            <Route
-                path="/verify-email-change"
-                element={<VerifyEmailChangeOtp />}
-            />
+                {/* PROTECTED AREA */}
+                <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
 
-            {/* Tasks */}
-            <Route path="/tasks" element={<TaskList />} />
-            <Route path="/tasks/add" element={<AddTask />} />
+                    {/* USER ROUTES */}
+                    <Route path="/profile" element={<UserProfile />} />
+                    <Route path="/verify-email-change" element={<VerifyEmailChangeOtp />} />
 
-            {/* Testing */}
-            <Route path="/testing" element={<Testing />} />
-        </Routes>
+                    {/* TASK ROUTES */}
+                    <Route path="/tasks" element={<TaskDashboard />} />
+                    <Route path="/tasks/add" element={<AddTask />} />
+                    <Route path="/tasks/edit/:id" element={<EditTask />} />
+
+
+                    <Route path="/analyze/rest" element={<RestSuggestionPage />} />
+                    <Route path="/analyze/schedule" element={<SchedulePage />} />
+
+
+
+                    {/* ADMIN ONLY ROUTE */}
+                    <Route
+                        path="/testing"
+                        element={
+                            <RoleRoute roles={["ADMIN"]}>
+                                <Testing />
+                            </RoleRoute>
+                        }
+                    />
+
+                </Route>
+
+                {/* 404 */}
+                <Route path="*" element={<h1>404 Not Found</h1>} />
+
+            </Routes>
+        </Suspense>
     );
 };
 
