@@ -1,0 +1,30 @@
+.sidebar {
+    width: 220px;
+    background: #1f2937;
+    min-height: calc(100vh - 60px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-link {
+    text-decoration: none;
+    color: #e5e7eb;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.sidebar-link:hover {
+    background: #374151;
+}
+
+.sidebar-link.active {
+    background: #2563eb;
+    color: white;
+}
+
+.admin {
+    background: #7c3aed;
+    color: white;
+}

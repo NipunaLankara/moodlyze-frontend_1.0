@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/auth.service";
 import type { LoginRequest } from "../../types/auth.types";
+import { useAuth } from "../../../../context/AuthContext";
 
 const SignIn = () => {
     const navigate = useNavigate();
+    const { login } = useAuth(); // ✅ Hook at top level
 
     const [formData, setFormData] = useState<LoginRequest>({
         userEmail: "",
@@ -30,26 +32,20 @@ const SignIn = () => {
         try {
             const res = await loginUser(formData);
 
-            const loginData = res.data.data; // 👈 StandardResponse.data
-
+            const loginData = res.data.data;
             const { jwtToken, email, role } = loginData;
 
-            //  Store auth data
-            localStorage.setItem("token", jwtToken);
-            localStorage.setItem("email", email);
-            localStorage.setItem("role", role);
+            // ✅ Save using AuthContext (handles localStorage internally)
+            login(jwtToken, email, role);
 
-            navigate("/testing"); // or /emotion-detect
-        }  catch (err: any) {
+            // ✅ Navigate after login
+            navigate("/testing");
+
+        } catch (err: any) {
             const backendError =
-                err.response?.data?.data ||     // "Invalid email or password"
-                err.response?.data?.massage ||  // "Login Failed"
-                "Login failed";
-            // console.log("FULL ERROR OBJECT ", err);
-            console.log("AXIOS RESPONSE ", err.response);
-            console.log("RESPONSE DATA ", err.response?.data);
-
-            setError("TEST ERROR MESSAGE");
+                err?.response?.data?.data ||       // backend message
+                err?.response?.data?.massage ||    // fallback if typo
+                "Invalid email or password";
 
             setError(backendError);
         } finally {
@@ -64,7 +60,9 @@ const SignIn = () => {
                     <h3 className="mb-4 text-center">Login</h3>
 
                     {error && (
-                        <div className="alert alert-danger">{error}</div>
+                        <div className="alert alert-danger">
+                            {error}
+                        </div>
                     )}
 
                     <input
@@ -73,6 +71,7 @@ const SignIn = () => {
                         placeholder="Email"
                         className="form-control mb-3"
                         required
+                        value={formData.userEmail}
                         onChange={handleChange}
                     />
 
@@ -82,6 +81,7 @@ const SignIn = () => {
                         placeholder="Password"
                         className="form-control mb-3"
                         required
+                        value={formData.password}
                         onChange={handleChange}
                     />
 
