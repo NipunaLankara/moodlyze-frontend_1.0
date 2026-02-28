@@ -4,9 +4,12 @@ import { loginUser } from "../../services/auth.service";
 import type { LoginRequest } from "../../types/auth.types";
 import { useAuth } from "../../../../context/AuthContext";
 
+import "../../../../styles/global.css";
+import "../../../../styles/Auth.css";
+
 const SignIn = () => {
     const navigate = useNavigate();
-    const { login } = useAuth(); // ✅ Hook at top level
+    const { login } = useAuth();
 
     const [formData, setFormData] = useState<LoginRequest>({
         userEmail: "",
@@ -18,10 +21,8 @@ const SignIn = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value,
-        }));
+        setFormData(prev => ({ ...prev, [name]: value }));
+        setError("");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -31,22 +32,16 @@ const SignIn = () => {
 
         try {
             const res = await loginUser(formData);
-
-            const loginData = res.data.data;
-            const { jwtToken, email, role } = loginData;
-
-            // ✅ Save using AuthContext (handles localStorage internally)
+            const { jwtToken, email, role } = res.data.data;
             login(jwtToken, email, role);
-
-            // ✅ Navigate after login
-            navigate("/testing");
-
+            navigate("/tasks");
         } catch (err: any) {
             const backendError =
-                err?.response?.data?.data ||       // backend message
-                err?.response?.data?.massage ||    // fallback if typo
+                err?.response?.data?.data ||
+                err?.response?.data?.message ||
+                err?.response?.data?.error ||
+                err?.message ||
                 "Invalid email or password";
-
             setError(backendError);
         } finally {
             setLoading(false);
@@ -54,50 +49,88 @@ const SignIn = () => {
     };
 
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <form className="col-md-6" onSubmit={handleSubmit}>
-                    <h3 className="mb-4 text-center">Login</h3>
+        <div className="auth-page">
+            {/* Left branding panel */}
+            <div className="auth-panel">
+                <div className="auth-panel__logo">🧠 Moodlyze</div>
+                <h2 className="auth-panel__title">
+                    Welcome back!<br />Let's check in on you.
+                </h2>
+                <p className="auth-panel__desc">
+                    Log in to see your tasks, track your mood, and get personalized
+                    recommendations based on how you feel today.
+                </p>
+                <div className="auth-panel__features">
+                    <div className="auth-panel__feature">
+                        <span className="auth-panel__feature-dot" />
+                        Real-time emotion analysis
+                    </div>
+                    <div className="auth-panel__feature">
+                        <span className="auth-panel__feature-dot" />
+                        Mood-aware task scheduling
+                    </div>
+                    <div className="auth-panel__feature">
+                        <span className="auth-panel__feature-dot" />
+                        Smart rest & focus suggestions
+                    </div>
+                </div>
+            </div>
+
+            {/* Right form panel */}
+            <div className="auth-form-side">
+                <div className="auth-card">
+                    <div className="auth-card__header">
+                        <div className="auth-card__mobile-logo">🧠 Moodlyze</div>
+                        <h1 className="auth-card__title">Sign In</h1>
+                        <p className="auth-card__subtitle">Enter your credentials to continue</p>
+                    </div>
 
                     {error && (
-                        <div className="alert alert-danger">
-                            {error}
-                        </div>
+                        <div className="alert alert-danger">⚠️ {error}</div>
                     )}
 
-                    <input
-                        type="email"
-                        name="userEmail"
-                        placeholder="Email"
-                        className="form-control mb-3"
-                        required
-                        value={formData.userEmail}
-                        onChange={handleChange}
-                    />
+                    <form className="auth-form" onSubmit={handleSubmit}>
+                        <div className="auth-input-wrapper">
+                            <span className="auth-input-icon">✉️</span>
+                            <input
+                                type="email"
+                                name="userEmail"
+                                placeholder="Email address"
+                                className="form-control"
+                                required
+                                value={formData.userEmail}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        className="form-control mb-3"
-                        required
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
+                        <div className="auth-input-wrapper">
+                            <span className="auth-input-icon">🔒</span>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                className="form-control"
+                                required
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <button
-                        type="submit"
-                        className="btn btn-primary w-100"
-                        disabled={loading}
-                    >
-                        {loading ? "Logging in..." : "Login"}
-                    </button>
+                        <button
+                            type="submit"
+                            className="auth-submit"
+                            disabled={loading}
+                        >
+                            {loading && <span className="auth-submit__spinner" />}
+                            {loading ? "Signing in..." : "Sign In"}
+                        </button>
+                    </form>
 
-                    <p className="text-center mt-3">
-                        Don’t have an account?{" "}
-                        <Link to="/sign_up">Sign Up</Link>
+                    <p className="auth-footer">
+                        Don't have an account?{" "}
+                        <Link to="/sign_up">Create one</Link>
                     </p>
-                </form>
+                </div>
             </div>
         </div>
     );

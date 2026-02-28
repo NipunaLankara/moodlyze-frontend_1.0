@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/auth.service";
 import type { RegisterRequest } from "../../types/auth.types";
-
+import "../../../../styles/global.css";
+import "../../../../styles/Auth.css";
 
 const SignUp = () => {
     const navigate = useNavigate();

@@ -1,4 +1,5 @@
 import type { TaskResponse } from "../types/task.types";
+import "./css/TaskCardList.css";
 
 type Props = {
     tasks: TaskResponse[];
@@ -7,60 +8,98 @@ type Props = {
     onEdit: (id: number) => void;
 };
 
-const TaskCardList = ({
-                          tasks,
-                          onComplete,
-                          onDelete,
-                          onEdit
-                      }: Props) => {
+const priorityConfig: Record<string, { label: string; className: string; icon: string }> = {
+    HIGH:   { label: "High",   className: "priority--high",   icon: "🔴" },
+    MEDIUM: { label: "Medium", className: "priority--medium", icon: "🟡" },
+    LOW:    { label: "Low",    className: "priority--low",    icon: "🟢" },
+};
+
+const TaskCardList = ({ tasks, onComplete, onDelete, onEdit }: Props) => {
     return (
-        <div>
-            <h3>Today’s Tasks ({tasks.length})</h3>
-
+        <div className="tcl-list">
             {tasks.length === 0 ? (
-                <p>No tasks added today</p>
+                <div className="tcl-empty">
+                    <span className="tcl-empty__icon">📭</span>
+                    <p>No tasks added today</p>
+                </div>
             ) : (
-                tasks.map(task => (
-                    <div
-                        key={task.id}
-                        style={{
-                            border: "1px solid #ddd",
-                            padding: "15px",
-                            marginBottom: "10px",
-                            borderRadius: "8px",
-                            background:
-                                task.status === "COMPLETED"
-                                    ? "#f0fdf4"
-                                    : "#fff"
-                        }}
-                    >
-                        <h4>{task.title}</h4>
-                        <p>{task.description}</p>
-                        <p>
-                            {task.priority} | {task.status}
-                        </p>
+                tasks.map((task, index) => {
+                    const p = priorityConfig[task.priority] || priorityConfig.MEDIUM;
+                    const isDone = task.status === "COMPLETED";
 
-                        <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                            {task.status === "PENDING" ? (
-                                <button onClick={() => onComplete(task)}>
-                                    Complete
+                    return (
+                        <div
+                            key={task.id}
+                            className={`tcl-card ${isDone ? "tcl-card--done" : ""}`}
+                            style={{ animationDelay: `${index * 0.06}s` }}
+                        >
+                            {/* Priority stripe */}
+                            <div className={`tcl-card__stripe ${p.className}`} />
+
+                            {/* Body */}
+                            <div className="tcl-card__body">
+                                <div className="tcl-card__top">
+                                    <h4 className={`tcl-card__title ${isDone ? "tcl-card__title--done" : ""}`}>
+                                        {task.title}
+                                    </h4>
+                                    <span className={`tcl-badge ${p.className}`}>
+                                        {p.icon} {p.label}
+                                    </span>
+                                </div>
+
+                                {task.description && (
+                                    <p className="tcl-card__desc">{task.description}</p>
+                                )}
+
+                                <div className="tcl-card__meta">
+                                    {task.taskDate && (
+                                        <span className="tcl-meta-chip">📅 {task.taskDate}</span>
+                                    )}
+                                    {task.deadlineTime && (
+                                        <span className="tcl-meta-chip">⏰ {task.deadlineTime}</span>
+                                    )}
+                                    {task.estimatedTimeMinutes && (
+                                        <span className="tcl-meta-chip">⏱ {task.estimatedTimeMinutes} min</span>
+                                    )}
+                                    <span className={`tcl-status ${isDone ? "tcl-status--done" : "tcl-status--pending"}`}>
+                                        {isDone ? "✅ Completed" : "🕐 Pending"}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="tcl-card__actions">
+                                {!isDone ? (
+                                    <button
+                                        className="tcl-btn tcl-btn--complete"
+                                        onClick={() => onComplete(task)}
+                                        title="Mark complete"
+                                    >
+                                        ✓
+                                    </button>
+                                ) : (
+                                    <button className="tcl-btn tcl-btn--done-icon" disabled title="Already completed">
+                                        ✓
+                                    </button>
+                                )}
+                                <button
+                                    className="tcl-btn tcl-btn--edit"
+                                    onClick={() => onEdit(task.id)}
+                                    title="Edit task"
+                                >
+                                    ✏️
                                 </button>
-                            ) : (
-                                <button disabled>
-                                    Completed
+                                <button
+                                    className="tcl-btn tcl-btn--delete"
+                                    onClick={() => onDelete(task.id)}
+                                    title="Delete task"
+                                >
+                                    🗑
                                 </button>
-                            )}
-
-                            <button onClick={() => onEdit(task.id)}>
-                                Edit
-                            </button>
-
-                            <button onClick={() => onDelete(task.id)}>
-                                Delete
-                            </button>
+                            </div>
                         </div>
-                    </div>
-                ))
+                    );
+                })
             )}
         </div>
     );

@@ -1,0 +1,169 @@
+/* ============================================
+   EmotionFlowSelector.css — Self-contained
+   Place next to EmotionFlowSelector.tsx
+   Import: import "./EmotionFlowSelector.css";
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Sora:wght@600;700&display=swap');
+
+.efs-wrapper {
+    font-family: 'Nunito', sans-serif;
+    max-width: 560px;
+    margin: 0 auto;
+    animation: efsFadeUp 0.45s ease both;
+}
+
+@keyframes efsFadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.efs-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.efs-header__icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.efs-header__title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+}
+
+.efs-header__sub {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    font-weight: 600;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+/* ── Options ── */
+.efs-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+/* Base option card */
+.efs-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.4rem;
+    border-radius: 18px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.efs-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(30, 41, 59, 0.12);
+}
+
+/* Before variant — blue */
+.efs-option--before {
+    background: linear-gradient(135deg, #e8f4fd 0%, #f0fdf8 100%);
+    border-color: #c8e6fa;
+}
+
+.efs-option--before:hover {
+    border-color: #5db3ef;
+    box-shadow: 0 8px 28px rgba(46, 157, 232, 0.18);
+}
+
+/* After variant — green */
+.efs-option--after {
+    background: linear-gradient(135deg, #e8f8f0 0%, #f0fbff 100%);
+    border-color: #c3edda;
+}
+
+.efs-option--after:hover {
+    border-color: #52c89a;
+    box-shadow: 0 8px 28px rgba(82, 200, 154, 0.18);
+}
+
+/* Icon bubble */
+.efs-option__icon {
+    font-size: 1.75rem;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.efs-option--before .efs-option__icon {
+    background: rgba(93, 179, 239, 0.2);
+}
+
+.efs-option--after .efs-option__icon {
+    background: rgba(82, 200, 154, 0.2);
+}
+
+/* Body text */
+.efs-option__body {
+    flex: 1;
+}
+
+.efs-option__title {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.3rem;
+}
+
+.efs-option--before .efs-option__title { color: #1a85d0; }
+.efs-option--after  .efs-option__title { color: #1d9669; }
+
+.efs-option__desc {
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.55;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Arrow */
+.efs-option__arrow {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.efs-option:hover .efs-option__arrow {
+    transform: translateX(4px);
+}
+
+.efs-option--before:hover .efs-option__arrow { color: #2e9de8; }
+.efs-option--after:hover  .efs-option__arrow { color: #2db07f; }
+
+/* Responsive */
+@media (max-width: 480px) {
+.efs-option {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+.efs-option__arrow { display: none; }
+}

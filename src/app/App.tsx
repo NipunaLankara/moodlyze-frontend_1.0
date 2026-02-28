@@ -20,26 +20,20 @@ const TaskDashboard = lazy(() => import("../features/task/pages/TaskDashboard"))
 
 const Testing = lazy(() => import("../features/auth/pages/SignIn/Testing"));
 
-const RestSuggestionPage = lazy(() =>
-    import("../features/analyze/pages/RestSuggestionPage")
-);
-
-const SchedulePage = lazy(() =>
-    import("../features/analyze/pages/SchedulePage")
-);
+const RestSuggestionPage = lazy(() => import("../features/analyze/pages/RestSuggestionPage"));
+const SchedulePage = lazy(() => import("../features/analyze/pages/SchedulePage"));
 
 const App = () => {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-
-                {/* PUBLIC */}
+                {/* PUBLIC ROUTES */}
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/sign_up" element={<Register />} />
                 <Route path="/verify_otp" element={<VerifyOtp />} />
 
-                {/* PROTECTED AREA */}
+                {/* PROTECTED AREA - layout with Navbar + Sidebar */}
                 <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
 
                     {/* USER ROUTES */}
@@ -51,13 +45,11 @@ const App = () => {
                     <Route path="/tasks/add" element={<AddTask />} />
                     <Route path="/tasks/edit/:id" element={<EditTask />} />
 
-
+                    {/* ANALYSIS */}
                     <Route path="/analyze/rest" element={<RestSuggestionPage />} />
                     <Route path="/analyze/schedule" element={<SchedulePage />} />
 
-
-
-                    {/* ADMIN ONLY ROUTE */}
+                    {/* ADMIN ONLY */}
                     <Route
                         path="/testing"
                         element={
@@ -71,7 +63,6 @@ const App = () => {
 
                 {/* 404 */}
                 <Route path="*" element={<h1>404 Not Found</h1>} />
-
             </Routes>
         </Suspense>
     );

@@ -6,61 +6,48 @@ import {
 } from "../services/emotion.service";
 import WebcamCapture from "./WebcamCapture";
 import AudioRecorder from "./AudioRecorder";
+import "./css/EmotionDetector.css";
 
 type Props = {
     onDetected: (emotion: string) => void;
     mode: "BEFORE" | "AFTER";
 };
 
+type EmotionType = "FACE" | "VOICE" | "TEXT";
+
+const EMOTION_TYPES: { type: EmotionType; icon: string; label: string; desc: string }[] = [
+    { type: "FACE",  icon: "📸", label: "Face",  desc: "Use camera or photo" },
+    { type: "VOICE", icon: "🎙️", label: "Voice", desc: "Record or upload audio" },
+    { type: "TEXT",  icon: "✍️", label: "Text",  desc: "Describe how you feel" },
+];
+
 const EmotionDetector = ({ onDetected, mode }: Props) => {
-
-    const [emotionType, setEmotionType] =
-        useState<"FACE" | "VOICE" | "TEXT" | null>(null);
-
-    const [textInput, setTextInput] = useState("");
+    const [emotionType, setEmotionType] = useState<EmotionType | null>(null);
+    const [textInput, setTextInput]     = useState("");
     const [capturedFile, setCapturedFile] = useState<File | null>(null);
-    const [loading, setLoading] = useState(false);
-
-    /* ---------------- FILE UPLOAD HANDLER ---------------- */
+    const [loading, setLoading]         = useState(false);
+    const [capturedLabel, setCapturedLabel] = useState("");
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
-        setCapturedFile(e.target.files[0]);
+        const file = e.target.files[0];
+        setCapturedFile(file);
+        setCapturedLabel(file.name);
     };
-
-    /* ---------------- DETECT HANDLER ---------------- */
 
     const handleDetect = async () => {
         if (!emotionType) return;
-
         try {
             setLoading(true);
-
             let res;
-
-            if (emotionType === "FACE" && capturedFile) {
-                res = await detectImageEmotion(capturedFile);
-            }
-
-            if (emotionType === "VOICE" && capturedFile) {
-                res = await detectSpeechEmotion(capturedFile);
-            }
-
-            if (emotionType === "TEXT" && textInput.trim()) {
-                res = await detectTextEmotion({ prompt: textInput });
-            }
-
+            if (emotionType === "FACE"  && capturedFile) res = await detectImageEmotion(capturedFile);
+            if (emotionType === "VOICE" && capturedFile) res = await detectSpeechEmotion(capturedFile);
+            if (emotionType === "TEXT"  && textInput.trim()) res = await detectTextEmotion({ prompt: textInput });
             if (res) {
-                const responseData = res.data.data;
-
-                if (typeof responseData === "string") {
-                    onDetected(responseData);
-                } else {
-                    onDetected(responseData.emotion);
-                }
+                const data = res.data.data;
+                onDetected(typeof data === "string" ? data : data.emotion);
             }
-
-        } catch (error) {
+        } catch {
             alert("Emotion detection failed");
         } finally {
             setLoading(false);
@@ -70,125 +57,116 @@ const EmotionDetector = ({ onDetected, mode }: Props) => {
     const reset = () => {
         setEmotionType(null);
         setCapturedFile(null);
+        setCapturedLabel("");
         setTextInput("");
     };
 
-    return (
-        <div
-            style={{
-                marginTop: "20px",
-                padding: "25px",
-                borderRadius: "12px",
-                boxShadow: "0 5px 20px rgba(0,0,0,0.1)",
-                background: "#ffffff"
-            }}
-        >
-            <h3 style={{ marginBottom: "15px" }}>
-                {mode === "BEFORE"
-                    ? "Detect Emotion Before Adding Task"
-                    : "Analyze Emotion After Tasks"}
-            </h3>
+    const canDetect =
+        (emotionType === "TEXT"  && textInput.trim().length > 0) ||
+        (emotionType !== "TEXT"  && capturedFile !== null);
 
-            {/* SELECT TYPE */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                <button onClick={() => setEmotionType("FACE")}>Face</button>
-                <button onClick={() => setEmotionType("VOICE")}>Voice</button>
-                <button onClick={() => setEmotionType("TEXT")}>Text</button>
+    return (
+        <div className="ed-card">
+
+            {/* Header */}
+            <div className="ed-header">
+                <div className="ed-header__icon-ring">
+                    {mode === "BEFORE" ? "🧠" : "📊"}
+                </div>
+                <div>
+                    <h3 className="ed-header__title">
+                        {mode === "BEFORE" ? "How are you feeling?" : "Analyze your mood"}
+                    </h3>
+                    <p className="ed-header__sub">
+                        {mode === "BEFORE"
+                            ? "Detect your emotion before adding tasks"
+                            : "Analyze your emotion after completing tasks"}
+                    </p>
+                </div>
             </div>
 
-            {/* FACE OPTIONS */}
+            {/* Type selector */}
+            <div className="ed-type-row">
+                {EMOTION_TYPES.map(({ type, icon, label, desc }) => (
+                    <button
+                        key={type}
+                        className={`ed-type-btn ${emotionType === type ? "ed-type-btn--active" : ""}`}
+                        onClick={() => { setEmotionType(type); setCapturedFile(null); setCapturedLabel(""); setTextInput(""); }}
+                    >
+                        <span className="ed-type-btn__icon">{icon}</span>
+                        <span className="ed-type-btn__label">{label}</span>
+                        <span className="ed-type-btn__desc">{desc}</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* FACE */}
             {emotionType === "FACE" && (
-                <div style={{ marginBottom: "15px" }}>
-                    <h4>Take Picture or Upload Image</h4>
-
-                    {/* Take Photo */}
-                    <WebcamCapture
-                        onCapture={(file) => setCapturedFile(file)}
-                    />
-
-                    <p style={{ margin: "10px 0" }}>OR</p>
-
-                    {/* Upload Image */}
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                    />
+                <div className="ed-panel" key="face">
+                    <div className="ed-panel__section">
+                        <p className="ed-panel__section-label">📷 Take a photo</p>
+                        <WebcamCapture onCapture={(file) => { setCapturedFile(file); setCapturedLabel("Photo captured ✓"); }} />
+                    </div>
+                    <div className="ed-divider"><span>or upload</span></div>
+                    <label className="ed-upload-label">
+                        <span className="ed-upload-label__icon">🖼️</span>
+                        <span className="ed-upload-label__text">
+                            {capturedLabel || "Choose image file"}
+                        </span>
+                        <input type="file" accept="image/*" onChange={handleFileUpload} className="ed-upload-input" />
+                    </label>
                 </div>
             )}
 
-            {/* VOICE OPTIONS */}
+            {/* VOICE */}
             {emotionType === "VOICE" && (
-                <div style={{ marginBottom: "15px" }}>
-                    <h4>Record Voice or Upload Audio</h4>
-
-                    {/* Record */}
-                    <AudioRecorder
-                        onRecorded={(file) => setCapturedFile(file)}
-                    />
-
-                    <p style={{ margin: "10px 0" }}>OR</p>
-
-                    {/* Upload Audio */}
-                    <input
-                        type="file"
-                        accept="audio/*"
-                        onChange={handleFileUpload}
-                    />
+                <div className="ed-panel" key="voice">
+                    <div className="ed-panel__section">
+                        <p className="ed-panel__section-label">🎙️ Record your voice</p>
+                        <AudioRecorder onRecorded={(file) => { setCapturedFile(file); setCapturedLabel("Recording ready ✓"); }} />
+                    </div>
+                    <div className="ed-divider"><span>or upload</span></div>
+                    <label className="ed-upload-label">
+                        <span className="ed-upload-label__icon">🎵</span>
+                        <span className="ed-upload-label__text">
+                            {capturedLabel || "Choose audio file"}
+                        </span>
+                        <input type="file" accept="audio/*" onChange={handleFileUpload} className="ed-upload-input" />
+                    </label>
                 </div>
             )}
 
             {/* TEXT */}
             {emotionType === "TEXT" && (
-                <textarea
-                    placeholder="How do you feel today?"
-                    value={textInput}
-                    onChange={(e) => setTextInput(e.target.value)}
-                    style={{
-                        width: "100%",
-                        minHeight: "100px",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        border: "1px solid #ccc"
-                    }}
-                />
+                <div className="ed-panel" key="text">
+                    <p className="ed-panel__section-label">✍️ Describe how you feel</p>
+                    <textarea
+                        className="ed-textarea"
+                        placeholder="e.g. I'm feeling a bit overwhelmed but trying to stay focused…"
+                        value={textInput}
+                        onChange={(e) => setTextInput(e.target.value)}
+                        rows={4}
+                    />
+                    <div className="ed-textarea-counter">{textInput.length} characters</div>
+                </div>
             )}
 
-            {/* ACTION BUTTONS */}
+            {/* Action buttons */}
             {emotionType && (
-                <div
-                    style={{
-                        marginTop: "20px",
-                        display: "flex",
-                        gap: "10px"
-                    }}
-                >
-                    <button
-                        onClick={handleDetect}
-                        disabled={loading}
-                        style={{
-                            padding: "10px 20px",
-                            borderRadius: "8px",
-                            border: "none",
-                            background: "#2563eb",
-                            color: "#fff",
-                            cursor: "pointer"
-                        }}
-                    >
-                        {loading ? "Detecting..." : "Detect Emotion"}
+                <div className="ed-actions">
+                    <button className="ed-cancel-btn" onClick={reset}>
+                        ✕ Cancel
                     </button>
-
                     <button
-                        onClick={reset}
-                        style={{
-                            padding: "10px 20px",
-                            borderRadius: "8px",
-                            border: "1px solid #ccc",
-                            background: "#f3f4f6",
-                            cursor: "pointer"
-                        }}
+                        className="ed-detect-btn"
+                        onClick={handleDetect}
+                        disabled={loading || !canDetect}
                     >
-                        Cancel
+                        {loading ? (
+                            <><span className="ed-spinner" /> Detecting…</>
+                        ) : (
+                            <>🔍 Detect Emotion</>
+                        )}
                     </button>
                 </div>
             )}
