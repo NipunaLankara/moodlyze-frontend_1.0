@@ -94,3 +94,21 @@
     .sp-stats { grid-template-columns: 1fr; }
     .sp-stat--mood { grid-column: 1; }
 }
+
+/* ── Break complete button variant ── */
+.sp-complete-btn--break {
+    border-color: #fde68a;
+    background: #fffbea;
+    color: #a37700;
+}
+
+.sp-complete-btn--break:hover:not(:disabled) {
+    background: #fde68a;
+    border-color: #ffcd3c;
+    transform: translateY(-1px);
+}
+
+.sp-spinner--break {
+    border-color: rgba(163, 119, 0, 0.25);
+    border-top-color: #a37700;
+}

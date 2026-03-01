@@ -1,13 +1,14 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar/Navbar";
+import "./MainLayout.css";
 
 const MainLayout = () => {
     return (
-        <div>
-            <nav style={{ padding: 10, background: "#eee" }}>
-                <b>Moodlyze</b>
-            </nav>
+        <div className="layout-shell">
+            <Navbar />
 
-            <div style={{ padding: 20 }}>
+            {/* Page content sits below the fixed navbar */}
+            <div className="layout-content">
                 <Outlet />
             </div>
         </div>

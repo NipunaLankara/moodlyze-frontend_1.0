@@ -16,10 +16,15 @@ const MOOD_CONFIG: Record<string, { icon: string; cls: string }> = {
     SAD:      { icon: "😔", cls: "mood--sad"     },
     TIRED:    { icon: "😴", cls: "mood--tired"   },
     ANGRY:    { icon: "😠", cls: "mood--angry"   },
+    NEUTRAL:  { icon: "😐", cls: "mood--calm"    },
 };
 
+// Backend sends "break" field, not "isBreak"
+const isBreakItem = (item: ScheduleItem) =>
+    (item as any).break === true || item.isBreak === true;
+
 const SchedulePage = () => {
-    const navigate  = useNavigate();
+    const navigate    = useNavigate();
     const [schedule,   setSchedule]   = useState<ScheduleItem[]>([]);
     const [analysis,   setAnalysis]   = useState<AnalysisResponse | null>(null);
     const [loading,    setLoading]    = useState(true);
@@ -46,6 +51,7 @@ const SchedulePage = () => {
     const formatTime = (d: string) =>
         new Date(d).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
+    // ✅ ALL items (tasks + breaks) can be completed
     const handleComplete = async (id?: number) => {
         if (!id) return;
         setCompleting(id);
@@ -53,7 +59,7 @@ const SchedulePage = () => {
             await completeSchedulePart(id);
             setSchedule(prev => prev.filter(i => i.id !== id));
         } catch {
-            alert("Failed to complete schedule part");
+            alert("Failed to complete this slot");
         } finally {
             setCompleting(null);
         }
@@ -70,13 +76,13 @@ const SchedulePage = () => {
 
     const moodKey  = (analysis.detectedMood || "").toUpperCase();
     const mood     = MOOD_CONFIG[moodKey] || { icon: "🧠", cls: "mood--calm" };
-    const tasksCnt = schedule.filter(i => !i.isBreak).length;
-    const brksCnt  = schedule.filter(i =>  i.isBreak).length;
+    const tasksCnt = schedule.filter(i => !isBreakItem(i)).length;
+    const brksCnt  = schedule.filter(i =>  isBreakItem(i)).length;
 
     return (
         <div className="sp-body">
 
-            {/* ── Header ── */}
+            {/* ── Page header ── */}
             <div className="sp-header">
                 <div>
                     <h1 className="sp-header__title">📅 Today's Smart Schedule</h1>
@@ -85,7 +91,7 @@ const SchedulePage = () => {
                     </p>
                 </div>
                 <button className="sp-back-btn" onClick={() => navigate("/tasks")}>
-                    ← Tasks
+                    ← Dashboard
                 </button>
             </div>
 
@@ -109,7 +115,7 @@ const SchedulePage = () => {
                     <span className="sp-stat__icon">☕</span>
                     <div>
                         <div className="sp-stat__val">{brksCnt}</div>
-                        <div className="sp-stat__lbl">Breaks</div>
+                        <div className="sp-stat__lbl">Breaks left</div>
                     </div>
                 </div>
                 <div className="sp-stat sp-stat--purple">
@@ -126,59 +132,66 @@ const SchedulePage = () => {
                 <h2 className="sp-section__title">Your schedule for today</h2>
 
                 <div className="sp-timeline">
-                    {schedule.map((item, i) => (
-                        <div
-                            key={item.id}
-                            className={`sp-item ${item.isBreak ? "sp-item--break" : "sp-item--task"}`}
-                            style={{ animationDelay: `${i * 0.07}s` }}
-                        >
-                            {/* Dot + connector line */}
-                            <div className="sp-item__track">
-                                <div className={`sp-item__dot ${item.isBreak ? "sp-item__dot--break" : "sp-item__dot--task"}`}>
-                                    {item.isBreak ? "☕" : "📌"}
-                                </div>
-                                {i < schedule.length - 1 && <div className="sp-item__line" />}
-                            </div>
+                    {schedule.map((item, i) => {
+                        const isBreak = isBreakItem(item);
+                        const isProcessing = completing === item.id;
 
-                            {/* Card */}
-                            <div className="sp-item__card">
-                                <div className="sp-item__card-head">
-                                    <div>
-                                        <p className="sp-item__time">
-                                            {formatTime(item.startTime)} — {formatTime(item.endTime)}
-                                        </p>
-                                        <h4 className="sp-item__title">
-                                            {item.isBreak
-                                                ? "Break Time"
-                                                : `${item.displayTitle}${item.partNumber ? ` · Part ${item.partNumber}` : ""}`}
-                                        </h4>
+                        return (
+                            <div
+                                key={item.id}
+                                className={`sp-item ${isBreak ? "sp-item--break" : "sp-item--task"}`}
+                                style={{ animationDelay: `${i * 0.07}s` }}
+                            >
+                                {/* Dot + connector line */}
+                                <div className="sp-item__track">
+                                    <div className={`sp-item__dot ${isBreak ? "sp-item__dot--break" : "sp-item__dot--task"}`}>
+                                        {isBreak ? "☕" : "📌"}
                                     </div>
-                                    <span className={`sp-badge ${item.isBreak ? "sp-badge--break" : "sp-badge--task"}`}>
-                                        {item.isBreak ? "☕ Rest" : "📋 Task"}
-                                    </span>
+                                    {i < schedule.length - 1 && <div className="sp-item__line" />}
                                 </div>
 
-                                {/* Thin progress shimmer bar */}
-                                <div className="sp-item__bar">
-                                    <div className={`sp-item__bar-fill ${item.isBreak ? "sp-item__bar-fill--break" : ""}`} />
-                                </div>
+                                {/* Card */}
+                                <div className="sp-item__card">
+                                    <div className="sp-item__card-head">
+                                        <div>
+                                            <p className="sp-item__time">
+                                                {formatTime(item.startTime)} — {formatTime(item.endTime)}
+                                            </p>
+                                            <h4 className="sp-item__title">
+                                                {isBreak
+                                                    ? item.displayTitle || "Short Break"
+                                                    : `${item.displayTitle}${item.partNumber ? ` · Part ${item.partNumber}` : ""}`
+                                                }
+                                            </h4>
+                                        </div>
+                                        <span className={`sp-badge ${isBreak ? "sp-badge--break" : "sp-badge--task"}`}>
+                                            {isBreak ? "☕ Rest" : "📋 Task"}
+                                        </span>
+                                    </div>
 
-                                {!item.isBreak && (
+                                    {/* Shimmer bar */}
+                                    <div className="sp-item__bar">
+                                        <div className={`sp-item__bar-fill ${isBreak ? "sp-item__bar-fill--break" : ""}`} />
+                                    </div>
+
+                                    {/* ✅ Complete button shown for BOTH tasks AND breaks */}
                                     <div className="sp-item__footer">
                                         <button
-                                            className="sp-complete-btn"
+                                            className={`sp-complete-btn ${isBreak ? "sp-complete-btn--break" : ""}`}
                                             onClick={() => handleComplete(item.id)}
-                                            disabled={completing === item.id}
+                                            disabled={isProcessing}
                                         >
-                                            {completing === item.id
-                                                ? <><span className="sp-spinner" /> Completing…</>
-                                                : <>✓ Mark Complete</>}
+                                            {isProcessing ? (
+                                                <><span className={`sp-spinner ${isBreak ? "sp-spinner--break" : ""}`} /> {isBreak ? "Finishing break…" : "Completing…"}</>
+                                            ) : (
+                                                isBreak ? "✓ Done with break" : "✓ Mark Complete"
+                                            )}
                                         </button>
                                     </div>
-                                )}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
