@@ -1,0 +1,389 @@
+/* ============================================
+   Navbar.css — Moodlyze
+   Theme: Light Mint Green
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Sora:wght@600;700&display=swap');
+
+/* ══════════════════════════════════════
+   BASE NAVBAR
+══════════════════════════════════════ */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    background: rgba(240,250,245,0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid #d4e8de;
+    display: flex;
+    align-items: center;
+    padding: 0 1.75rem;
+    gap: 2rem;
+    z-index: 1000;
+    box-shadow: 0 2px 14px rgba(30,80,50,0.06);
+    font-family: 'Nunito', sans-serif;
+}
+
+/* ── Logo ── */
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.navbar__logo-icon { font-size: 1.35rem; line-height: 1; }
+
+.navbar__logo-text {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3cb97a, #4aabdf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    transition: opacity 0.15s ease;
+}
+
+.navbar__logo:hover .navbar__logo-text { opacity: 0.8; }
+
+/* ── Center nav links ── */
+.navbar__links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.navbar__link {
+    position: relative;
+    padding: 0.45rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #5c7a6a;
+    text-decoration: none;
+    transition: color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+}
+
+.navbar__link:hover {
+    color: #1a2e22;
+    background: #eaf4ef;
+}
+
+.navbar__link--active {
+    color: #238a59;
+    background: #d8f2e8;
+}
+
+.navbar__link--active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #5dce96, #4aabdf);
+}
+
+/* ── Right-side actions ── */
+.navbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* Unauthenticated */
+.navbar__action-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #5c7a6a;
+    text-decoration: none;
+    padding: 0.4rem 0.875rem;
+    border-radius: 9999px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navbar__action-link:hover {
+    background: #eaf4ef;
+    color: #1a2e22;
+}
+
+.navbar__cta {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    background: linear-gradient(135deg, #5dce96, #3cb97a);
+    padding: 0.45rem 1.2rem;
+    border-radius: 9999px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(60,185,122,0.32);
+    letter-spacing: 0.02em;
+}
+
+.navbar__cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(60,185,122,0.42);
+    color: white;
+}
+
+/* ── User pill ── */
+.navbar__user {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #eaf4ef;
+    border: 1px solid #d4e8de;
+    padding: 0.3rem 0.875rem 0.3rem 0.4rem;
+    border-radius: 9999px;
+    max-width: 220px;
+}
+
+.navbar__user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #5dce96, #4aabdf);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.navbar__user-avatar--lg {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.navbar__user-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a2e22;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 110px;
+    text-transform: capitalize;
+}
+
+.navbar__role-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #d8f2e8;
+    color: #238a59;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+}
+
+.navbar__role-badge--admin {
+    background: #f0ecff;
+    color: #6c52e0;
+}
+
+/* ── Logout button ── */
+.navbar__logout {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #d43c58;
+    background: #fde8ec;
+    border: 1.5px solid #f9c8d0;
+    padding: 0.42rem 1.1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.navbar__logout:hover {
+    background: #f9c8d0;
+    border-color: #f4a0ae;
+    color: #b53348;
+}
+
+/* ══════════════════════════════════════
+   HAMBURGER (mobile only)
+══════════════════════════════════════ */
+.navbar__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1.5px solid #d4e8de;
+    background: rgba(255,255,255,0.85);
+    cursor: pointer;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.navbar__hamburger span {
+    display: block;
+    height: 2px;
+    background: #5c7a6a;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.navbar__hamburger--open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar__hamburger--open span:nth-child(2) { opacity: 0; }
+.navbar__hamburger--open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ══════════════════════════════════════
+   MOBILE DRAWER
+══════════════════════════════════════ */
+.navbar__mobile-drawer {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,46,34,0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 999;
+    animation: drawerOverlayIn 0.2s ease both;
+}
+
+@keyframes drawerOverlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.navbar__mobile-inner {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: min(320px, 85vw);
+    background: #f5fbf8;
+    padding: 1.5rem 1.25rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: -8px 0 32px rgba(30,80,50,0.14);
+    animation: drawerIn 0.3s cubic-bezier(0.34, 1.26, 0.64, 1) both;
+    overflow-y: auto;
+}
+
+@keyframes drawerIn {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+}
+
+.navbar__mobile-user {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #d4e8de;
+    padding-top: 0.5rem;
+}
+
+.navbar__mobile-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2e22;
+    text-transform: capitalize;
+    margin-bottom: 0.15rem;
+}
+
+.navbar__mobile-email {
+    font-size: 0.78rem;
+    color: #8aab99;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.navbar__mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+}
+
+.navbar__mobile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #5c7a6a;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navbar__mobile-link:hover {
+    background: #eaf4ef;
+    color: #1a2e22;
+}
+
+.navbar__mobile-link--active {
+    background: #d8f2e8;
+    color: #238a59;
+}
+
+.navbar__mobile-link-icon {
+    font-size: 1.1rem;
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.navbar__mobile-logout {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    border: 1.5px solid #f9c8d0;
+    background: #fde8ec;
+    color: #d43c58;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.navbar__mobile-logout:hover { background: #f9c8d0; }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+    .navbar__links    { display: none; }
+    .navbar__user     { display: none; }
+    .navbar__logout   { display: none; }
+    .navbar__hamburger { display: flex; }
+    .navbar { gap: 1rem; }
+}
+
+@media (max-width: 500px) {
+    .navbar { padding: 0 1rem; }
+    .navbar__cta { display: none; }
+}

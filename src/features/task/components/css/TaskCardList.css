@@ -1,0 +1,267 @@
+/* ============================================
+   TaskCardList.css
+   Self-contained. Place next to TaskCardList.tsx
+   Import: import "./TaskCardList.css";
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Sora:wght@600;700&display=swap');
+
+/* ── List wrapper ── */
+.tcl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+/* ── Empty state ── */
+.tcl-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+    color: #94a3b8;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    gap: 0.5rem;
+}
+
+.tcl-empty__icon {
+    font-size: 2.25rem;
+    display: block;
+    opacity: 0.5;
+}
+
+/* ── Card ── */
+.tcl-card {
+    display: flex;
+    align-items: stretch;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.05);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    animation: cardIn 0.4s ease both;
+    font-family: 'Nunito', sans-serif;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+.tcl-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(30, 41, 59, 0.09);
+    border-color: #c8e6fa;
+}
+
+/* Completed card — dimmed */
+.tcl-card--done {
+    background: #f8fffe;
+    border-color: #c3edda;
+    opacity: 0.82;
+}
+
+.tcl-card--done:hover {
+    border-color: #8ddcba;
+}
+
+/* ── Priority left stripe ── */
+.tcl-card__stripe {
+    width: 5px;
+    flex-shrink: 0;
+}
+
+.priority--high   { background: linear-gradient(180deg, #ec6d7d, #f4a3ad); }
+.priority--medium { background: linear-gradient(180deg, #ffcd3c, #ffe382); }
+.priority--low    { background: linear-gradient(180deg, #52c89a, #8ddcba); }
+
+/* ── Card body ── */
+.tcl-card__body {
+    flex: 1;
+    padding: 1rem 1.1rem;
+    min-width: 0;
+}
+
+.tcl-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+    flex-wrap: wrap;
+}
+
+/* Title */
+.tcl-card__title {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
+}
+
+.tcl-card__title--done {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+/* Priority badge */
+.tcl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tcl-badge.priority--high   { background: #fdeef0; color: #c62a44; }
+.tcl-badge.priority--medium { background: #fffbea; color: #a37700; }
+.tcl-badge.priority--low    { background: #e8f8f0; color: #1d9669; }
+
+/* Description */
+.tcl-card__desc {
+    font-size: 0.84rem;
+    color: #64748b;
+    margin-bottom: 0.6rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Meta chips row */
+.tcl-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tcl-meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+}
+
+/* Status badge */
+.tcl-status {
+    font-size: 0.73rem;
+    font-weight: 800;
+    padding: 0.2rem 0.65rem;
+    border-radius: 9999px;
+}
+
+.tcl-status--pending {
+    background: #e8f4fd;
+    color: #2e9de8;
+}
+
+.tcl-status--done {
+    background: #e8f8f0;
+    color: #1d9669;
+}
+
+/* ── Action buttons column ── */
+.tcl-card__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.75rem 0.85rem;
+    border-left: 1px solid #f1f5f9;
+    flex-shrink: 0;
+}
+
+.tcl-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: transform 0.15s ease, background 0.15s ease;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+
+.tcl-btn:hover:not(:disabled) {
+    transform: scale(1.12);
+}
+
+.tcl-btn--complete {
+    background: #e8f8f0;
+    color: #1d9669;
+    font-size: 1rem;
+}
+
+.tcl-btn--complete:hover {
+    background: #c3edda;
+}
+
+.tcl-btn--done-icon {
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+    font-size: 1rem;
+}
+
+.tcl-btn--edit {
+    background: #e8f4fd;
+    color: #2e9de8;
+}
+
+.tcl-btn--edit:hover {
+    background: #c8e6fa;
+}
+
+.tcl-btn--delete {
+    background: #fdeef0;
+    color: #c62a44;
+}
+
+.tcl-btn--delete:hover {
+    background: #f9d0d5;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    .tcl-card__actions {
+        flex-direction: row;
+        padding: 0.75rem;
+        border-left: none;
+        border-top: 1px solid #f1f5f9;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .tcl-card {
+        flex-direction: column;
+    }
+
+    .tcl-card__stripe {
+        width: 100%;
+        height: 4px;
+    }
+}
