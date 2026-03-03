@@ -116,12 +116,16 @@ const SignIn = () => {
                             />
                         </div>
 
+                        <p style={{textAlign: "right"}}>
+                            <Link to="/forgot-password">Forgot Password?</Link>
+                        </p>
+
                         <button
                             type="submit"
                             className="auth-submit"
                             disabled={loading}
                         >
-                            {loading && <span className="auth-submit__spinner" />}
+                            {loading && <span className="auth-submit__spinner"/>}
                             {loading ? "Signing in..." : "Sign In"}
                         </button>
                     </form>

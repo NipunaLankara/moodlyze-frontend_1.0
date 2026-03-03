@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ NEW
 import { useEffect, useState } from "react";
 import {
     fetchTodaysSchedule,
@@ -24,18 +24,30 @@ const isBreakItem = (item: ScheduleItem) =>
     (item as any).break === true || item.isBreak === true;
 
 const SchedulePage = () => {
-    const navigate    = useNavigate();
+    const navigate = useNavigate();
+    const location = useLocation(); // ✅ NEW
+    const navData = location.state as AnalysisResponse | null; // ✅ NEW
+
     const [schedule,   setSchedule]   = useState<ScheduleItem[]>([]);
     const [analysis,   setAnalysis]   = useState<AnalysisResponse | null>(null);
     const [loading,    setLoading]    = useState(true);
     const [completing, setCompleting] = useState<number | null>(null);
 
     useEffect(() => {
+        // ✅ NEW: if redirected from analyze page, use passed state
+        if (navData) {
+            setAnalysis(navData);
+            setSchedule(navData.schedule || []);
+            setLoading(false);
+            return;
+        }
+
+        // fallback: fetch from backend (refresh / direct visit)
         (async () => {
             try {
                 const res = await fetchTodaysSchedule();
                 setAnalysis(res);
-                setSchedule(res.taskData || []);
+                setSchedule(res.schedule || []); // ✅ changed from taskData to schedule
             } catch (err: any) {
                 if (err.response?.status === 404) navigate("/tasks/add");
             } finally {
@@ -51,7 +63,7 @@ const SchedulePage = () => {
     const formatTime = (d: string) =>
         new Date(d).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-    // ✅ ALL items (tasks + breaks) can be completed
+    // ALL items (tasks + breaks) can be completed
     const handleComplete = async (id?: number) => {
         if (!id) return;
         setCompleting(id);
@@ -142,7 +154,6 @@ const SchedulePage = () => {
                                 className={`sp-item ${isBreak ? "sp-item--break" : "sp-item--task"}`}
                                 style={{ animationDelay: `${i * 0.07}s` }}
                             >
-                                {/* Dot + connector line */}
                                 <div className="sp-item__track">
                                     <div className={`sp-item__dot ${isBreak ? "sp-item__dot--break" : "sp-item__dot--task"}`}>
                                         {isBreak ? "☕" : "📌"}
@@ -150,7 +161,6 @@ const SchedulePage = () => {
                                     {i < schedule.length - 1 && <div className="sp-item__line" />}
                                 </div>
 
-                                {/* Card */}
                                 <div className="sp-item__card">
                                     <div className="sp-item__card-head">
                                         <div>
@@ -169,12 +179,10 @@ const SchedulePage = () => {
                                         </span>
                                     </div>
 
-                                    {/* Shimmer bar */}
                                     <div className="sp-item__bar">
                                         <div className={`sp-item__bar-fill ${isBreak ? "sp-item__bar-fill--break" : ""}`} />
                                     </div>
 
-                                    {/* ✅ Complete button shown for BOTH tasks AND breaks */}
                                     <div className="sp-item__footer">
                                         <button
                                             className={`sp-complete-btn ${isBreak ? "sp-complete-btn--break" : ""}`}

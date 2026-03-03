@@ -5,6 +5,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleRoute from "./routes/RoleRoute";
 import MainLayout from "./MainLayout";
 import EditTask from "../features/task/pages/EditTask.tsx";
+import ForgotPassword from "../features/auth/pages/ForgotPassword/ForgotPassword.tsx";
+import ResetPassword from "../features/auth/pages/ForgotPassword/ResetPassword.tsx";
 
 /* Lazy pages */
 const Home = lazy(() => import("../pages/Home"));
@@ -38,6 +40,8 @@ const App = () => {
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/sign_up" element={<Register />} />
                 <Route path="/verify_otp" element={<VerifyOtp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
                 {/* PROTECTED AREA - layout with Navbar + Sidebar */}
                 <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>

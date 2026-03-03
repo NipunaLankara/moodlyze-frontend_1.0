@@ -12,5 +12,5 @@ export interface StandardResponse<T> {
 }
 
 export interface TextEmotionRequest {
-    prompt: string;
+    text: string;
 }

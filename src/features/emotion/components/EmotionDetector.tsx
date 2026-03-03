@@ -42,7 +42,7 @@ const EmotionDetector = ({ onDetected, mode }: Props) => {
             let res;
             if (emotionType === "FACE"  && capturedFile) res = await detectImageEmotion(capturedFile);
             if (emotionType === "VOICE" && capturedFile) res = await detectSpeechEmotion(capturedFile);
-            if (emotionType === "TEXT"  && textInput.trim()) res = await detectTextEmotion({ prompt: textInput });
+            if (emotionType === "TEXT"  && textInput.trim()) res = await detectTextEmotion({ text: textInput });
             if (res) {
                 const data = res.data.data;
                 onDetected(typeof data === "string" ? data : data.emotion);
