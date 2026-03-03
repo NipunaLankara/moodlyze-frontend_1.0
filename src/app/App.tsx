@@ -23,6 +23,12 @@ const Testing = lazy(() => import("../features/auth/pages/SignIn/Testing"));
 const RestSuggestionPage = lazy(() => import("../features/analyze/pages/RestSuggestionPage"));
 const SchedulePage = lazy(() => import("../features/analyze/pages/SchedulePage"));
 
+// const ReminderPage = lazy(() =>
+//     import("../features/reminder/pages/ReminderPage/ReminderPage")
+// );
+
+const ReminderCalendar = lazy(() => import("../features/reminder/pages/ReminderCalendar"));
+
 const App = () => {
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -48,6 +54,9 @@ const App = () => {
                     {/* ANALYSIS */}
                     <Route path="/analyze/rest" element={<RestSuggestionPage />} />
                     <Route path="/analyze/schedule" element={<SchedulePage />} />
+
+                    {/*<Route path="/reminders" element={<ReminderPage />} />*/}
+                    <Route path="/reminders" element={<ReminderCalendar />} />
 
                     {/* ADMIN ONLY */}
                     <Route

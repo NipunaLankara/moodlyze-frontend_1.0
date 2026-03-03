@@ -21,6 +21,7 @@ const Navbar = () => {
         { to: "/tasks/add",         label: "Dashboard",    icon: "🏠" },
         { to: "/tasks",             label: "My Tasks",     icon: "📋" },
         { to: "/analyze/schedule",  label: "Schedule",     icon: "📅" },
+        { to: "/reminders",         label: "Reminders",    icon: "⏰" },
         { to: "/profile",           label: "Profile",      icon: "👤" },
     ];
 

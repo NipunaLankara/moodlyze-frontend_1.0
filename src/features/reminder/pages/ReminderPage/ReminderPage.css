@@ -1,0 +1,39 @@
+.reminder-container {
+    max-width: 700px;
+    margin: auto;
+}
+
+.reminder-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.reminder-form input {
+    padding: 8px;
+}
+
+.reminder-form button {
+    padding: 8px 12px;
+}
+
+.reminder-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.delete-btn {
+    background: #ff5252;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+}
+
+.alert-box {
+    background: #f5f5f5;
+    padding: 10px;
+    margin-bottom: 10px;
+}
