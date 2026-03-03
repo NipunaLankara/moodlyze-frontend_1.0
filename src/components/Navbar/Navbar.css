@@ -1,6 +1,6 @@
 /* ============================================
    Navbar.css — Moodlyze
-   Self-contained. Import in Navbar.tsx.
+   Theme: Light Mint Green
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Sora:wght@600;700&display=swap');
@@ -10,20 +10,18 @@
 ══════════════════════════════════════ */
 .navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 64px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(240,250,245,0.94);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #d4e8de;
     display: flex;
     align-items: center;
     padding: 0 1.75rem;
     gap: 2rem;
     z-index: 1000;
-    box-shadow: 0 2px 14px rgba(30, 41, 59, 0.06);
+    box-shadow: 0 2px 14px rgba(30,80,50,0.06);
     font-family: 'Nunito', sans-serif;
 }
 
@@ -36,16 +34,13 @@
     flex-shrink: 0;
 }
 
-.navbar__logo-icon {
-    font-size: 1.35rem;
-    line-height: 1;
-}
+.navbar__logo-icon { font-size: 1.35rem; line-height: 1; }
 
 .navbar__logo-text {
     font-family: 'Sora', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #2e9de8, #2db07f);
+    background: linear-gradient(135deg, #3cb97a, #4aabdf);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -70,21 +65,20 @@
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 700;
-    color: #64748b;
+    color: #5c7a6a;
     text-decoration: none;
     transition: color 0.15s ease, background 0.15s ease;
     white-space: nowrap;
 }
 
 .navbar__link:hover {
-    color: #1e293b;
-    background: #f1f5f9;
+    color: #1a2e22;
+    background: #eaf4ef;
 }
 
-/* Active link — pill highlight */
 .navbar__link--active {
-    color: #2e9de8;
-    background: #e8f4fd;
+    color: #238a59;
+    background: #d8f2e8;
 }
 
 .navbar__link--active::after {
@@ -96,7 +90,7 @@
     width: 20px;
     height: 2.5px;
     border-radius: 2px;
-    background: linear-gradient(90deg, #2e9de8, #2db07f);
+    background: linear-gradient(90deg, #5dce96, #4aabdf);
 }
 
 /* ── Right-side actions ── */
@@ -112,7 +106,7 @@
 .navbar__action-link {
     font-size: 0.88rem;
     font-weight: 700;
-    color: #64748b;
+    color: #5c7a6a;
     text-decoration: none;
     padding: 0.4rem 0.875rem;
     border-radius: 9999px;
@@ -120,8 +114,8 @@
 }
 
 .navbar__action-link:hover {
-    background: #f1f5f9;
-    color: #1e293b;
+    background: #eaf4ef;
+    color: #1a2e22;
 }
 
 .navbar__cta {
@@ -129,17 +123,17 @@
     font-weight: 700;
     color: white;
     text-decoration: none;
-    background: linear-gradient(135deg, #5db3ef, #2e9de8);
+    background: linear-gradient(135deg, #5dce96, #3cb97a);
     padding: 0.45rem 1.2rem;
     border-radius: 9999px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 14px rgba(46, 157, 232, 0.35);
+    box-shadow: 0 4px 14px rgba(60,185,122,0.32);
     letter-spacing: 0.02em;
 }
 
 .navbar__cta:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(46, 157, 232, 0.42);
+    box-shadow: 0 6px 20px rgba(60,185,122,0.42);
     color: white;
 }
 
@@ -148,8 +142,8 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
+    background: #eaf4ef;
+    border: 1px solid #d4e8de;
     padding: 0.3rem 0.875rem 0.3rem 0.4rem;
     border-radius: 9999px;
     max-width: 220px;
@@ -159,7 +153,7 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #5db3ef, #2db07f);
+    background: linear-gradient(135deg, #5dce96, #4aabdf);
     color: white;
     display: flex;
     align-items: center;
@@ -180,7 +174,7 @@
 .navbar__user-name {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #1e293b;
+    color: #1a2e22;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -191,8 +185,8 @@
 .navbar__role-badge {
     display: inline-flex;
     align-items: center;
-    background: #e8f4fd;
-    color: #2e9de8;
+    background: #d8f2e8;
+    color: #238a59;
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.05em;
@@ -202,17 +196,17 @@
 }
 
 .navbar__role-badge--admin {
-    background: #f3eeff;
-    color: #7c4ff0;
+    background: #f0ecff;
+    color: #6c52e0;
 }
 
 /* ── Logout button ── */
 .navbar__logout {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #e24059;
-    background: #fdeef0;
-    border: 1.5px solid #f9d0d5;
+    color: #d43c58;
+    background: #fde8ec;
+    border: 1.5px solid #f9c8d0;
     padding: 0.42rem 1.1rem;
     border-radius: 9999px;
     cursor: pointer;
@@ -223,9 +217,9 @@
 }
 
 .navbar__logout:hover {
-    background: #f9d0d5;
-    border-color: #f4a3ad;
-    color: #c62a44;
+    background: #f9c8d0;
+    border-color: #f4a0ae;
+    color: #b53348;
 }
 
 /* ══════════════════════════════════════
@@ -240,8 +234,8 @@
     height: 36px;
     padding: 6px;
     border-radius: 10px;
-    border: 1.5px solid #e2e8f0;
-    background: white;
+    border: 1.5px solid #d4e8de;
+    background: rgba(255,255,255,0.85);
     cursor: pointer;
     margin-left: auto;
     flex-shrink: 0;
@@ -250,7 +244,7 @@
 .navbar__hamburger span {
     display: block;
     height: 2px;
-    background: #64748b;
+    background: #5c7a6a;
     border-radius: 2px;
     transition: transform 0.25s ease, opacity 0.25s ease;
 }
@@ -265,8 +259,9 @@
 .navbar__mobile-drawer {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
+    background: rgba(26,46,34,0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     z-index: 999;
     animation: drawerOverlayIn 0.2s ease both;
 }
@@ -278,16 +273,14 @@
 
 .navbar__mobile-inner {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; right: 0; bottom: 0;
     width: min(320px, 85vw);
-    background: white;
+    background: #f5fbf8;
     padding: 1.5rem 1.25rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    box-shadow: -8px 0 32px rgba(30, 41, 59, 0.15);
+    box-shadow: -8px 0 32px rgba(30,80,50,0.14);
     animation: drawerIn 0.3s cubic-bezier(0.34, 1.26, 0.64, 1) both;
     overflow-y: auto;
 }
@@ -302,22 +295,22 @@
     align-items: center;
     gap: 0.875rem;
     padding-bottom: 1.25rem;
-    border-bottom: 1px solid #f1f5f9;
-    padding-top: 0.5rem; /* below status bar on mobile */
+    border-bottom: 1px solid #d4e8de;
+    padding-top: 0.5rem;
 }
 
 .navbar__mobile-name {
     font-family: 'Sora', sans-serif;
     font-size: 1rem;
     font-weight: 700;
-    color: #1e293b;
+    color: #1a2e22;
     text-transform: capitalize;
     margin-bottom: 0.15rem;
 }
 
 .navbar__mobile-email {
     font-size: 0.78rem;
-    color: #94a3b8;
+    color: #8aab99;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -341,19 +334,19 @@
     font-family: 'Nunito', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #64748b;
+    color: #5c7a6a;
     text-decoration: none;
     transition: background 0.15s ease, color 0.15s ease;
 }
 
 .navbar__mobile-link:hover {
-    background: #f1f5f9;
-    color: #1e293b;
+    background: #eaf4ef;
+    color: #1a2e22;
 }
 
 .navbar__mobile-link--active {
-    background: #e8f4fd;
-    color: #2e9de8;
+    background: #d8f2e8;
+    color: #238a59;
 }
 
 .navbar__mobile-link-icon {
@@ -367,9 +360,9 @@
     width: 100%;
     padding: 0.75rem;
     border-radius: 9999px;
-    border: 1.5px solid #f9d0d5;
-    background: #fdeef0;
-    color: #c62a44;
+    border: 1.5px solid #f9c8d0;
+    background: #fde8ec;
+    color: #d43c58;
     font-family: 'Nunito', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
@@ -377,17 +370,15 @@
     transition: background 0.15s ease;
 }
 
-.navbar__mobile-logout:hover {
-    background: #f9d0d5;
-}
+.navbar__mobile-logout:hover { background: #f9c8d0; }
 
 /* ══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════ */
 @media (max-width: 900px) {
-    .navbar__links { display: none; }
-    .navbar__user  { display: none; }
-    .navbar__logout { display: none; }
+    .navbar__links    { display: none; }
+    .navbar__user     { display: none; }
+    .navbar__logout   { display: none; }
     .navbar__hamburger { display: flex; }
     .navbar { gap: 1rem; }
 }

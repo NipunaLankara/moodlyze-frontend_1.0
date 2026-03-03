@@ -7,6 +7,7 @@ const MainLayout = () => {
         <div className="layout-shell">
             <Navbar />
 
+
             {/* Page content sits below the fixed navbar */}
             <div className="layout-content">
                 <Outlet />

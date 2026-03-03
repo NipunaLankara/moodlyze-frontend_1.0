@@ -1,348 +1,59 @@
-/* ============================================
-   EditTask.css
-   Self-contained. Place next to EditTask.tsx
-   Import: import "./EditTask.css";
-   ============================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Sora:wght@600;700&display=swap');
 
 .et-shell {
-    min-height: 100vh;
-    background: #f0f7ff;
-    font-family: 'Nunito', sans-serif;
-    color: #1e293b;
+    min-height: 100vh; font-family: 'Nunito', sans-serif; color: #1a2e22;
+    background: #f0faf5;
+    background-image:
+            radial-gradient(ellipse 50% 40% at 85% 8%,  #c8f0dc 0%, transparent 60%),
+            radial-gradient(ellipse 35% 40% at 8%  90%, #d4eefb 0%, transparent 55%);
 }
+.et-body { max-width: 680px; margin: 0 auto; padding: 88px 1.5rem 3rem; }
 
-.et-body {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 88px 1.5rem 3rem;
-}
+.et-back { background: none; border: none; font-family: 'Nunito', sans-serif; font-size: 0.87rem; font-weight: 700; color: #5c7a6a; cursor: pointer; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.3rem; padding: 0; transition: color 0.15s ease; }
+.et-back:hover { color: #3cb97a; }
 
-/* Back link */
-.et-back {
-    background: none;
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.87rem;
-    font-weight: 700;
-    color: #64748b;
-    cursor: pointer;
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0;
-    transition: color 0.15s ease;
-}
-
-.et-back:hover { color: #2e9de8; }
-
-/* Card */
 .et-card {
-    background: white;
-    border-radius: 24px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 24px rgba(30,41,59,0.08);
-    padding: 2.25rem;
+    background: rgba(255,255,255,0.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-radius: 24px; border: 1px solid #d4e8de;
+    box-shadow: 0 4px 24px rgba(30,80,50,0.09); padding: 2.25rem;
     animation: etIn 0.5s cubic-bezier(0.34,1.26,0.64,1) both;
 }
+@keyframes etIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-@keyframes etIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-}
+.et-card__header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid #eaf4ef; }
+.et-card__header-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #d8f2e8, #d4eefb); border: 1.5px solid #b0e4ce; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.et-card__title { font-family: 'Sora', sans-serif; font-size: 1.45rem; font-weight: 700; color: #1a2e22; letter-spacing: -0.02em; margin-bottom: 0.15rem; }
+.et-card__sub { font-size: 0.85rem; color: #8aab99; font-weight: 600; }
 
-/* Card header */
-.et-card__header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid #f1f5f9;
-}
+.et-loading { display: flex; flex-direction: column; align-items: center; gap: 0.875rem; padding: 3rem; color: #8aab99; font-size: 0.9rem; font-weight: 600; }
+.et-loading__ring { width: 36px; height: 36px; border: 3px solid #d4e8de; border-top-color: #3cb97a; border-radius: 50%; animation: etSpin 0.8s linear infinite; }
 
-.et-card__header-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #e8f4fd, #e8f8f0);
-    border: 1.5px solid #c8e6fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
+.et-success-banner { background: #d8f2e8; border: 1px solid #b0e4ce; color: #238a59; border-radius: 12px; padding: 0.75rem 1.1rem; font-size: 0.875rem; font-weight: 700; margin-bottom: 1.25rem; animation: etSlide 0.3s ease both; }
+@keyframes etSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
-.et-card__title {
-    font-family: 'Sora', sans-serif;
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: #1e293b;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.15rem;
-}
+.et-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.et-field--full { grid-column: 1 / -1; }
+.et-label { display: block; font-size: 0.82rem; font-weight: 700; color: #5c7a6a; margin-bottom: 0.4rem; letter-spacing: 0.02em; }
+.et-req { color: #e8687c; margin-left: 2px; }
 
-.et-card__sub {
-    font-size: 0.85rem;
-    color: #94a3b8;
-    font-weight: 600;
-}
+.et-input { width: 100%; padding: 0.72rem 1rem; border: 2px solid #d4e8de; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; color: #1a2e22; background: #f5fbf8; outline: none; transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; box-sizing: border-box; }
+.et-input:focus { border-color: #3cb97a; background: white; box-shadow: 0 0 0 3px rgba(60,185,122,0.14); }
+.et-input::placeholder { color: #8aab99; }
+.et-textarea { resize: vertical; min-height: 82px; }
+.et-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238aab99' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.4rem; cursor: pointer; }
 
-/* Loading */
-.et-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.875rem;
-    padding: 3rem;
-    color: #94a3b8;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
+.et-actions { display: flex; gap: 0.875rem; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid #eaf4ef; }
+.et-btn-cancel { flex: 1; padding: 0.8rem; border-radius: 9999px; border: 2px solid #d4e8de; background: #f5fbf8; color: #5c7a6a; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; }
+.et-btn-cancel:hover { background: #eaf4ef; border-color: #b8d4c8; }
+.et-btn-save { flex: 2; padding: 0.8rem; border-radius: 9999px; border: none; background: linear-gradient(135deg, #5dce96, #3cb97a); color: white; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.45rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 16px rgba(60,185,122,0.32); letter-spacing: 0.02em; }
+.et-btn-save:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(60,185,122,0.42); }
+.et-btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-.et-loading__ring {
-    width: 36px;
-    height: 36px;
-    border: 3px solid #e2e8f0;
-    border-top-color: #5db3ef;
-    border-radius: 50%;
-    animation: etSpin 0.8s linear infinite;
-}
-
-/* Success banner */
-.et-success-banner {
-    background: #e8f8f0;
-    border: 1px solid #c3edda;
-    color: #1d9669;
-    border-radius: 12px;
-    padding: 0.75rem 1.1rem;
-    font-size: 0.875rem;
-    font-weight: 700;
-    margin-bottom: 1.25rem;
-    animation: etSlide 0.3s ease both;
-}
-
-@keyframes etSlide {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Form grid */
-.et-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.et-field { }
-
-.et-field--full {
-    grid-column: 1 / -1;
-}
-
-.et-label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #64748b;
-    margin-bottom: 0.4rem;
-    letter-spacing: 0.02em;
-}
-
-.et-req { color: #e24059; margin-left: 2px; }
-
-/* Input / Textarea / Select */
-.et-input {
-    width: 100%;
-    padding: 0.72rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    color: #1e293b;
-    background: #f8fafc;
-    outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    box-sizing: border-box;
-}
-
-.et-input:focus {
-    border-color: #5db3ef;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(93,179,239,0.13);
-}
-
-.et-input::placeholder { color: #cbd5e1; }
-
-.et-textarea {
-    resize: vertical;
-    min-height: 82px;
-}
-
-.et-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.9rem center;
-    padding-right: 2.4rem;
-    cursor: pointer;
-}
-
-/* Actions row */
-.et-actions {
-    display: flex;
-    gap: 0.875rem;
-    margin-top: 1.75rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #f1f5f9;
-}
-
-.et-btn-cancel {
-    flex: 1;
-    padding: 0.8rem;
-    border-radius: 9999px;
-    border: 2px solid #e2e8f0;
-    background: #f8fafc;
-    color: #64748b;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.et-btn-cancel:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.et-btn-save {
-    flex: 2;
-    padding: 0.8rem;
-    border-radius: 9999px;
-    border: none;
-    background: linear-gradient(135deg, #5db3ef, #2e9de8);
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 800;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 16px rgba(46,157,232,0.35);
-    letter-spacing: 0.02em;
-}
-
-.et-btn-save:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(46,157,232,0.42);
-}
-
-.et-btn-save:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Spinner */
-.et-spinner {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: etSpin 0.7s linear infinite;
-    flex-shrink: 0;
-}
-
+.et-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: etSpin 0.7s linear infinite; flex-shrink: 0; }
 @keyframes etSpin { to { transform: rotate(360deg); } }
 
-/* Responsive */
 @media (max-width: 560px) {
-    .et-form {
-        grid-template-columns: 1fr;
-    }
-    .et-field--full {
-        grid-column: 1;
-    }
-    .et-card {
-        padding: 1.5rem;
-    }
-}.form-container {
-    max-width: 650px;
-    margin: auto;
-    padding: 25px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.form-row {
-    display: flex;
-    gap: 15px;
-}
-
-.form-row .form-group {
-    flex: 1;
-}
-
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 25px;
-}
-
-.btn-primary {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-primary:disabled {
-    background: #999;
-    cursor: not-allowed;
-}
-
-.btn-secondary {
-    background: #eee;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.loading {
-    text-align: center;
-    margin-top: 50px;
+    .et-form { grid-template-columns: 1fr; }
+    .et-field--full { grid-column: 1; }
+    .et-card { padding: 1.5rem; }
 }
