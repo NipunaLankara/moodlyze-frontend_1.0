@@ -57,3 +57,9 @@
     .et-field--full { grid-column: 1; }
     .et-card { padding: 1.5rem; }
 }
+
+.et-error{
+    color:#e53935;
+    font-size:13px;
+    margin-top:4px;
+}

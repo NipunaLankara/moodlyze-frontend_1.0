@@ -32,9 +32,23 @@ const SignIn = () => {
 
         try {
             const res = await loginUser(formData);
-            const { jwtToken, email, role } = res.data.data;
+            const data = res.data.data;
+
+            // 🔐 If 2FA is required
+            if (data === "2FA_REQUIRED") {
+                navigate("/verify-2fa", {
+                    state: { email: formData.userEmail }
+                });
+                return;
+            }
+
+            // Normal login flow
+            const { jwtToken, email, role } = data;
+
             login(jwtToken, email, role);
+
             navigate("/tasks");
+
         } catch (err: any) {
             const backendError =
                 err?.response?.data?.data ||
@@ -42,6 +56,7 @@ const SignIn = () => {
                 err?.response?.data?.error ||
                 err?.message ||
                 "Invalid email or password";
+
             setError(backendError);
         } finally {
             setLoading(false);
@@ -116,7 +131,7 @@ const SignIn = () => {
                             />
                         </div>
 
-                        <p style={{textAlign: "right"}}>
+                        <p style={{ textAlign: "right" }}>
                             <Link to="/forgot-password">Forgot Password?</Link>
                         </p>
 
@@ -125,7 +140,7 @@ const SignIn = () => {
                             className="auth-submit"
                             disabled={loading}
                         >
-                            {loading && <span className="auth-submit__spinner"/>}
+                            {loading && <span className="auth-submit__spinner" />}
                             {loading ? "Signing in..." : "Sign In"}
                         </button>
                     </form>

@@ -8,10 +8,12 @@ import Navbar from "../../../components/Navbar/Navbar.tsx";
 const EditTask = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+
     const [form, setForm] = useState<UpdateTaskRequest>({});
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const loadTask = async () => {
@@ -29,11 +31,23 @@ const EditTask = () => {
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
+
         setForm(prev => ({ ...prev, [name]: value }));
+
+        if (name === "title" && value.trim() !== "") {
+            setError("");
+        }
     };
 
     const submit = async () => {
+
+        if (!form.title || form.title.trim() === "") {
+            setError("Title is required");
+            return;
+        }
+
         setSaving(true);
+
         try {
             await updateTask(Number(id), form);
             setSaved(true);
@@ -48,13 +62,12 @@ const EditTask = () => {
             <Navbar />
             <div className="et-body">
 
-                {/* Back breadcrumb */}
                 <button className="et-back" onClick={() => navigate("/tasks")}>
                     ← Back to tasks
                 </button>
 
                 <div className="et-card">
-                    {/* Header */}
+
                     <div className="et-card__header">
                         <div className="et-card__header-icon">✏️</div>
                         <div>
@@ -77,9 +90,13 @@ const EditTask = () => {
                             )}
 
                             <div className="et-form">
+
                                 {/* Title */}
                                 <div className="et-field et-field--full">
-                                    <label className="et-label">Title <span className="et-req">*</span></label>
+                                    <label className="et-label">
+                                        Title <span className="et-req">*</span>
+                                    </label>
+
                                     <input
                                         className="et-input"
                                         name="title"
@@ -87,6 +104,10 @@ const EditTask = () => {
                                         value={form.title || ""}
                                         onChange={handleChange}
                                     />
+
+                                    {error && (
+                                        <p className="et-error">{error}</p>
+                                    )}
                                 </div>
 
                                 {/* Description */}
@@ -101,25 +122,38 @@ const EditTask = () => {
                                     />
                                 </div>
 
-                                {/* Priority + Status */}
+                                {/* Priority */}
                                 <div className="et-field">
-                                    <label className="et-label">Priority <span className="et-req">*</span></label>
-                                    <select className="et-input et-select" name="priority" value={form.priority || ""} onChange={handleChange}>
+                                    <label className="et-label">
+                                        Priority <span className="et-req">*</span>
+                                    </label>
+                                    <select
+                                        className="et-input et-select"
+                                        name="priority"
+                                        value={form.priority || ""}
+                                        onChange={handleChange}
+                                    >
                                         <option value="HIGH">🔴 High</option>
                                         <option value="MEDIUM">🟡 Medium</option>
                                         <option value="LOW">🟢 Low</option>
                                     </select>
                                 </div>
 
+                                {/* Status */}
                                 <div className="et-field">
                                     <label className="et-label">Status</label>
-                                    <select className="et-input et-select" name="status" value={form.status || ""} onChange={handleChange}>
+                                    <select
+                                        className="et-input et-select"
+                                        name="status"
+                                        value={form.status || ""}
+                                        onChange={handleChange}
+                                    >
                                         <option value="PENDING">🕐 Pending</option>
                                         <option value="COMPLETED">✅ Completed</option>
                                     </select>
                                 </div>
 
-                                {/* Est. minutes + Deadline */}
+                                {/* Estimated Time */}
                                 <div className="et-field">
                                     <label className="et-label">Estimated Minutes</label>
                                     <input
@@ -133,6 +167,7 @@ const EditTask = () => {
                                     />
                                 </div>
 
+                                {/* Deadline Time */}
                                 <div className="et-field">
                                     <label className="et-label">Deadline Time</label>
                                     <input
@@ -144,7 +179,7 @@ const EditTask = () => {
                                     />
                                 </div>
 
-                                {/* Date — full width */}
+                                {/* Task Date */}
                                 <div className="et-field et-field--full">
                                     <label className="et-label">Task Date</label>
                                     <input
@@ -155,17 +190,31 @@ const EditTask = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
+
                             </div>
 
-                            {/* Actions */}
                             <div className="et-actions">
-                                <button className="et-btn-cancel" onClick={() => navigate("/tasks")}>
+                                <button
+                                    className="et-btn-cancel"
+                                    onClick={() => navigate("/tasks")}
+                                >
                                     Cancel
                                 </button>
-                                <button className="et-btn-save" onClick={submit} disabled={saving || saved}>
+
+                                <button
+                                    className="et-btn-save"
+                                    onClick={submit}
+                                    disabled={saving || saved}
+                                >
                                     {saving ? (
-                                        <><span className="et-spinner" /> Saving…</>
-                                    ) : saved ? "✅ Saved!" : "Save Changes"}
+                                        <>
+                                            <span className="et-spinner" /> Saving…
+                                        </>
+                                    ) : saved ? (
+                                        "✅ Saved!"
+                                    ) : (
+                                        "Save Changes"
+                                    )}
                                 </button>
                             </div>
                         </>

@@ -25,6 +25,8 @@ const Testing = lazy(() => import("../features/auth/pages/SignIn/Testing"));
 const RestSuggestionPage = lazy(() => import("../features/analyze/pages/RestSuggestionPage"));
 const SchedulePage = lazy(() => import("../features/analyze/pages/SchedulePage"));
 
+/* Lazy pages */
+const Verify2FA = lazy(() => import("../features/auth/pages/VerifyOtp/Verify2FA"));
 // const ReminderPage = lazy(() =>
 //     import("../features/reminder/pages/ReminderPage/ReminderPage")
 // );
@@ -40,6 +42,7 @@ const App = () => {
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/sign_up" element={<Register />} />
                 <Route path="/verify_otp" element={<VerifyOtp />} />
+                <Route path="/verify-2fa" element={<Verify2FA />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 

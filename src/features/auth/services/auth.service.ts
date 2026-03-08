@@ -19,3 +19,10 @@ export const forgotPassword = (data: ForgotPasswordRequest) =>
 
 export const resetPassword = (data: ResetPasswordRequest) =>
     API.post("/auth/reset-password", data);
+
+
+export const toggle2FA = (status: boolean) =>
+    API.put(`/auth/2fa/enable-disable/0?status=${status}`);
+
+export const verify2FA = (data: OtpVerifyRequest) =>
+    API.post("/auth/verify-2fa", data);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserProfile, updateUserProfile } from "../../services/user.service.ts";
+import { toggle2FA } from "../../../auth/services/auth.service";
 import type { UserProfileRequest } from "../../types/user.types.ts";
 import "./UserProfile.css";
 import Navbar from "../../../../components/Navbar/Navbar.tsx";
@@ -20,13 +21,26 @@ const UserProfile = () => {
     const [pageLoading, setPageLoading] = useState(true);
     const [saved, setSaved] = useState(false);
 
-    useEffect(() => { loadProfile(); }, []);
+    // 2FA states
+    const [twoFAEnabled, setTwoFAEnabled] = useState(false);
+    const [twoFaLoading, setTwoFaLoading] = useState(false);
+    const [twoFaMessage, setTwoFaMessage] = useState("");
+
+    useEffect(() => {
+        loadProfile();
+    }, []);
 
     const loadProfile = async () => {
         try {
             const res = await getUserProfile();
             setProfile(res.data.data);
             setOriginalEmail(res.data.data.email);
+
+            // if backend returns this field
+            if (res.data.data.twoFactorEnabled !== undefined) {
+                setTwoFAEnabled(res.data.data.twoFactorEnabled);
+            }
+
         } catch {
             alert("Failed to load profile");
         } finally {
@@ -43,14 +57,17 @@ const UserProfile = () => {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+
         try {
             await updateUserProfile(profile);
+
             if (profile.email !== originalEmail) {
                 navigate("/verify-email-change", { state: { email: profile.email } });
             } else {
                 setSaved(true);
                 setTimeout(() => setSaved(false), 3000);
             }
+
         } catch {
             alert("Profile update failed");
         } finally {
@@ -58,7 +75,32 @@ const UserProfile = () => {
         }
     };
 
-    // Initials avatar
+    // Toggle 2FA
+    const handle2FAToggle = async () => {
+        try {
+            setTwoFaLoading(true);
+
+            const newStatus = !twoFAEnabled;
+
+            await toggle2FA(newStatus);
+
+            setTwoFAEnabled(newStatus);
+
+            setTwoFaMessage(
+                newStatus
+                    ? "🔐 Two-Factor Authentication Enabled"
+                    : "⚠️ Two-Factor Authentication Disabled"
+            );
+
+            setTimeout(() => setTwoFaMessage(""), 4000);
+
+        } catch {
+            alert("Failed to update 2FA setting");
+        } finally {
+            setTwoFaLoading(false);
+        }
+    };
+
     const initials = profile.name
         ? profile.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
         : "?";
@@ -91,7 +133,7 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        {/* Form card */}
+                        {/* Profile Form */}
                         <div className="up-card">
                             <div className="up-card__header">
                                 <h3 className="up-card__title">Edit Profile</h3>
@@ -112,7 +154,7 @@ const UserProfile = () => {
 
                             <form className="up-form" onSubmit={handleUpdate}>
                                 <div className="up-form__grid">
-                                    {/* Name */}
+
                                     <div className="up-field up-field--full">
                                         <label className="up-label">Full Name</label>
                                         <div className="up-input-wrap">
@@ -128,7 +170,6 @@ const UserProfile = () => {
                                         </div>
                                     </div>
 
-                                    {/* Email */}
                                     <div className="up-field up-field--full">
                                         <label className="up-label">
                                             Email Address
@@ -150,7 +191,6 @@ const UserProfile = () => {
                                         </div>
                                     </div>
 
-                                    {/* Address */}
                                     <div className="up-field">
                                         <label className="up-label">Address</label>
                                         <div className="up-input-wrap">
@@ -165,7 +205,6 @@ const UserProfile = () => {
                                         </div>
                                     </div>
 
-                                    {/* Contact */}
                                     <div className="up-field">
                                         <label className="up-label">Contact Number</label>
                                         <div className="up-input-wrap">
@@ -179,6 +218,7 @@ const UserProfile = () => {
                                             />
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div className="up-form__footer">
@@ -198,6 +238,38 @@ const UserProfile = () => {
                                 </div>
                             </form>
                         </div>
+
+                        {/* 2FA SECURITY CARD */}
+                        <div className="up-card">
+                            <div className="up-card__header">
+                                <h3 className="up-card__title">Security Settings</h3>
+                                <p className="up-card__sub">
+                                    Protect your account with Two-Factor Authentication
+                                </p>
+                            </div>
+
+                            {twoFaMessage && (
+                                <div className="up-success-banner">
+                                    {twoFaMessage}
+                                </div>
+                            )}
+
+                            <div className="up-form__footer">
+                                <button
+                                    type="button"
+                                    className="up-save-btn"
+                                    onClick={handle2FAToggle}
+                                    disabled={twoFaLoading}
+                                >
+                                    {twoFaLoading
+                                        ? "Updating..."
+                                        : twoFAEnabled
+                                            ? "Disable Two-Factor Authentication"
+                                            : "Enable Two-Factor Authentication"}
+                                </button>
+                            </div>
+                        </div>
+
                     </>
                 )}
             </div>
