@@ -67,7 +67,7 @@ const ForgotPassword = () => {
                     </div>
                 )}
 
-                {/* Form */}
+
                 <form className="fp-form" onSubmit={handleSubmit}>
                     <div className="fp-field">
                         <label className="fp-label" htmlFor="fp-email">Email address</label>

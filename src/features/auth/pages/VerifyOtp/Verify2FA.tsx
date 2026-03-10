@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { verify2FA } from "../../services/auth.service"; // new service
+import { verify2FA } from "../../services/auth.service";
 import type { OtpVerifyRequest } from "../../types/auth.types";
-import "./VerifyOtp.css"; // keep same CSS
+import "./VerifyOtp.css";
 
 const Verify2FA = () => {
     const navigate = useNavigate();
@@ -30,14 +30,14 @@ const Verify2FA = () => {
         }
     };
 
-    // Handle backspace — move to previous box
+
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Backspace" && !otp[index] && index > 0) {
             inputRefs.current[index - 1]?.focus();
         }
     };
 
-    // Handle paste — fill all boxes at once
+
     const handlePaste = (e: React.ClipboardEvent) => {
         e.preventDefault();
         const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);

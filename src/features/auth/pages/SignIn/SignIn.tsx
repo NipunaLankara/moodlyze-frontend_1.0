@@ -34,7 +34,7 @@ const SignIn = () => {
             const res = await loginUser(formData);
             const data = res.data.data;
 
-            // 🔐 If 2FA is required
+
             if (data === "2FA_REQUIRED") {
                 navigate("/verify-2fa", {
                     state: { email: formData.userEmail }
@@ -42,7 +42,7 @@ const SignIn = () => {
                 return;
             }
 
-            // Normal login flow
+
             const { jwtToken, email, role } = data;
 
             login(jwtToken, email, role);
@@ -65,7 +65,7 @@ const SignIn = () => {
 
     return (
         <div className="auth-page">
-            {/* Left branding panel */}
+
             <div className="auth-panel">
                 <div className="auth-panel__logo">🧠 Moodlyze</div>
                 <h2 className="auth-panel__title">
@@ -91,7 +91,7 @@ const SignIn = () => {
                 </div>
             </div>
 
-            {/* Right form panel */}
+
             <div className="auth-form-side">
                 <div className="auth-card">
                     <div className="auth-card__header">

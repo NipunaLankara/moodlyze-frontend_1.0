@@ -17,7 +17,7 @@ const VerifyOtp = () => {
 
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-    // Handle each digit box
+
     const handleDigitChange = (index: number, value: string) => {
         // Only allow single digit
         const digit = value.replace(/\D/g, "").slice(-1);
@@ -26,20 +26,20 @@ const VerifyOtp = () => {
         setOtp(newOtp);
         setError("");
 
-        // Auto-move to next box
+
         if (digit && index < 5) {
             inputRefs.current[index + 1]?.focus();
         }
     };
 
-    // Handle backspace — move to previous box
+
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Backspace" && !otp[index] && index > 0) {
             inputRefs.current[index - 1]?.focus();
         }
     };
 
-    // Handle paste — fill all boxes at once
+
     const handlePaste = (e: React.ClipboardEvent) => {
         e.preventDefault();
         const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
@@ -167,7 +167,6 @@ const VerifyOtp = () => {
                     </button>
                 </form>
 
-                {/* Resend */}
                 <p className="otp-resend">
                     Didn't receive a code?{" "}
                     <Link to="/sign_up" className="otp-resend__link">
@@ -175,7 +174,7 @@ const VerifyOtp = () => {
                     </Link>
                 </p>
 
-                {/* Back to login */}
+
                 <p className="otp-back">
                     <Link to="/login" className="otp-back__link">
                         ← Back to login

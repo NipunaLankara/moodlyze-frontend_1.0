@@ -151,7 +151,6 @@ const EmotionDetector = ({ onDetected, mode }: Props) => {
                 </div>
             )}
 
-            {/* Action buttons */}
             {emotionType && (
                 <div className="ed-actions">
                     <button className="ed-cancel-btn" onClick={reset}>

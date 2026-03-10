@@ -9,7 +9,7 @@ export const completeSchedulePart = (scheduleId: number) =>
 
 export const fetchTodaysSchedule = async (): Promise<AnalysisResponse> => {
     const res = await API.get("/analyze/today", {
-        headers: { "X-User-Id": 123 } // Replace with actual user id
+        headers: { "X-User-Id": 123 }
     });
     return res.data.data;
 };

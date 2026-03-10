@@ -62,7 +62,7 @@ const AudioRecorder = ({ onRecorded }: Props) => {
     return (
         <div className="ar-wrapper">
 
-            {/* Idle — not started */}
+
             {!recording && !recorded && (
                 <button className="ar-start-btn" onClick={startRecording}>
                     <span className="ar-mic-icon">🎙️</span>

@@ -9,7 +9,6 @@ import ForgotPassword from "../features/auth/pages/ForgotPassword/ForgotPassword
 import ResetPassword from "../features/auth/pages/ForgotPassword/ResetPassword.tsx";
 
 /* Lazy pages */
-const Home = lazy(() => import("../pages/Home"));
 const SignIn = lazy(() => import("../features/auth/pages/SignIn/SignIn"));
 const Register = lazy(() => import("../features/auth/pages/SignUp/SignUp"));
 const VerifyOtp = lazy(() => import("../features/auth/pages/VerifyOtp/VerifyOtp"));
@@ -38,7 +37,7 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
             <Routes>
                 {/* PUBLIC ROUTES */}
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<SignIn />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/sign_up" element={<Register />} />
                 <Route path="/verify_otp" element={<VerifyOtp />} />
@@ -62,10 +61,10 @@ const App = () => {
                     <Route path="/analyze/rest" element={<RestSuggestionPage />} />
                     <Route path="/analyze/schedule" element={<SchedulePage />} />
 
-                    {/*<Route path="/reminders" element={<ReminderPage />} />*/}
+
                     <Route path="/reminders" element={<ReminderCalendar />} />
 
-                    {/* ADMIN ONLY */}
+
                     <Route
                         path="/testing"
                         element={
@@ -77,7 +76,7 @@ const App = () => {
 
                 </Route>
 
-                {/* 404 */}
+
                 <Route path="*" element={<h1>404 Not Found</h1>} />
             </Routes>
         </Suspense>

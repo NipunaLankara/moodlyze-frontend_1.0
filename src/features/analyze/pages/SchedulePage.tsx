@@ -25,8 +25,8 @@ const isBreakItem = (item: ScheduleItem) =>
 
 const SchedulePage = () => {
     const navigate = useNavigate();
-    const location = useLocation(); // ✅ NEW
-    const navData = location.state as AnalysisResponse | null; // ✅ NEW
+    const location = useLocation();
+    const navData = location.state as AnalysisResponse | null;
 
     const [schedule,   setSchedule]   = useState<ScheduleItem[]>([]);
     const [analysis,   setAnalysis]   = useState<AnalysisResponse | null>(null);
@@ -34,7 +34,7 @@ const SchedulePage = () => {
     const [completing, setCompleting] = useState<number | null>(null);
 
     useEffect(() => {
-        // ✅ NEW: if redirected from analyze page, use passed state
+
         if (navData) {
             setAnalysis(navData);
             setSchedule(navData.schedule || []);
@@ -42,12 +42,12 @@ const SchedulePage = () => {
             return;
         }
 
-        // fallback: fetch from backend (refresh / direct visit)
+
         (async () => {
             try {
                 const res = await fetchTodaysSchedule();
                 setAnalysis(res);
-                setSchedule(res.schedule || []); // ✅ changed from taskData to schedule
+                setSchedule(res.schedule || []);
             } catch (err: any) {
                 if (err.response?.status === 404) navigate("/tasks/add");
             } finally {
@@ -63,7 +63,7 @@ const SchedulePage = () => {
     const formatTime = (d: string) =>
         new Date(d).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-    // ALL items (tasks + breaks) can be completed
+
     const handleComplete = async (id?: number) => {
         if (!id) return;
         setCompleting(id);

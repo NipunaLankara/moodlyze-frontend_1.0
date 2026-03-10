@@ -29,13 +29,13 @@ const Navbar = () => {
         <>
             <nav className="navbar">
 
-                {/* ── Logo ── */}
+
                 <Link to="/" className="navbar__logo">
                     <span className="navbar__logo-icon">🧠</span>
                     <span className="navbar__logo-text">Moodlyze</span>
                 </Link>
 
-                {/* ── Nav links (authenticated only) ── */}
+
                 {token && (
                     <div className="navbar__links">
                         {navLinks.map(({ to, label }) => (
@@ -52,7 +52,7 @@ const Navbar = () => {
                     </div>
                 )}
 
-                {/* ── Right side actions ── */}
+
                 <div className="navbar__actions">
                     {!token ? (
                         <>
@@ -61,7 +61,7 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            {/* User pill */}
+
                             <div className="navbar__user">
                                 <div className="navbar__user-avatar">
                                     {firstName.charAt(0).toUpperCase()}
@@ -82,7 +82,7 @@ const Navbar = () => {
                     )}
                 </div>
 
-                {/* ── Mobile hamburger ── */}
+
                 {token && (
                     <button
                         className={`navbar__hamburger ${mobileOpen ? "navbar__hamburger--open" : ""}`}
@@ -94,7 +94,6 @@ const Navbar = () => {
                 )}
             </nav>
 
-            {/* ── Mobile drawer ── */}
             {token && mobileOpen && (
                 <div className="navbar__mobile-drawer" onClick={() => setMobileOpen(false)}>
                     <div className="navbar__mobile-inner" onClick={e => e.stopPropagation()}>

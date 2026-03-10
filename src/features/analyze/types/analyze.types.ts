@@ -1,5 +1,5 @@
 export interface ScheduleItem {
-    id: number,        // scheduleId (VERY IMPORTANT)
+    id: number,
     taskId: number,
     displayTitle: string,
     partNumber?: number,

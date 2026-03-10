@@ -95,7 +95,7 @@
     .sp-stat--mood { grid-column: 1; }
 }
 
-/* ── Break complete button variant ── */
+
 .sp-complete-btn--break {
     border-color: #fde68a;
     background: #fffbea;
